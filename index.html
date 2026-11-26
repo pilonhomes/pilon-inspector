@@ -74,6 +74,9 @@ textarea { resize:vertical; }
 .swdel { position:absolute; inset:0 0 0 auto; width:96px; border:0; background:#d9363e; color:#fff; font:700 13px var(--body); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; cursor:pointer; }
 .swdel .ico { width:20px; height:20px; } .swrow.far .swdel, .swrow.going .swdel { width:100%; } .swrow.going { transition:opacity .18s; opacity:.4; }
 .gone summary { cursor:pointer; font-weight:700; padding:4px 2px; } .gone .row { flex-wrap:wrap; }
+.genph { border:1px dashed var(--line); border-radius:12px; padding:10px; margin-top:10px; display:grid; gap:8px; }
+.genph .gh { display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; } .genph .gh b { display:inline-flex; gap:5px; align-items:center; } .genph .gh .ico { width:16px; height:16px; }
+.cline.gen { border-left-color:var(--line); color:var(--muted); } .pgen { margin:8px 0; }
 .chip { display:inline-block; font:600 11.5px var(--body); padding:2px 8px; border-radius:99px; background:var(--soft); color:var(--muted); white-space:nowrap; }
 .dots { display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end; }
 .dot { font:700 11.5px var(--body); padding:1px 7px; border-radius:99px; color:#fff; white-space:nowrap; }
@@ -742,7 +745,8 @@ async function addPhotos(files) {
   if (t.kind === "agent") { const ag = state.agents.find(a => a.id === t.id); if (!ag) return; try { const ph = await storePhoto(files[0], 600); ag.photo = { asset: ph.asset, url: ph.url, w: ph.w, h: ph.h, id: ph.id }; if (!ag._local) { await saveDoc("agents/" + ag.id, ag); refreshAgentSnaps(ag); } render(); } catch (x) { toast("Couldn't read that photo.", "err"); } return; }
   const i = curInsp(t.id); if (!i) return;
   const it = i.sections[t.s].items[t.k];
-  let cm = t.c != null ? it.comments[t.c] : null;
+  let cm = t.c != null ? it.comments[t.c] : t.gen ? it.comments.find(x => x.gen) : null;
+  if (!cm && t.gen) { cm = { id: uid(), gen: true, sev: "info", title: "", text: "", photos: [] }; it.comments.unshift(cm); if (!it.st) it.st = "I"; }
   if (!cm) { cm = { id: uid(), sev: "rec", title: "", text: "", photos: [] }; it.comments.push(cm); if (!it.st) it.st = "I"; }
   state.busy.photo = true; render();
   for (const f of files) {
@@ -753,7 +757,7 @@ async function addPhotos(files) {
     } catch (x) { toast("Couldn't read that photo.", "err"); }
   }
   state.busy.photo = false; render();
-  const ai = t.ai && sample && cm.photos.length;
+  const ai = t.ai && !cm.gen && sample && cm.photos.length;
   if (ai) await aiComment(i, t.s, t.k, it.comments.indexOf(cm));
   if (files.length > 1) { const c0 = it.comments.indexOf(cm), first = cm.photos.length - files.length; if (c0 >= 0 && first >= 0) actToast((ai ? "Claude wrote the finding. " : "") + files.length + " photos added.", "Mark them up", () => { const I = curInsp(t.id); if (I) openEditor(I, { s: t.s, k: t.k, c: c0, p: first }, photoWheres(I, t.s)); }); }
 }
@@ -841,7 +845,7 @@ ${lines.join("\n") || "(no defects recorded)"}`, { modelTier: "default" });
 // ---------- views ----------
 function counts(i) {
   const c = { safety: 0, rec: 0, maint: 0, info: 0, done: 0, total: 0, photos: 0 };
-  i.sections.forEach(s => s.items.forEach(it => { c.total++; if (it.st) c.done++; it.comments.forEach(cm => { c[cm.sev] = (c[cm.sev] || 0) + 1; c.photos += cm.photos.length; }); }));
+  i.sections.forEach(s => s.items.forEach(it => { c.total++; if (it.st) c.done++; it.comments.forEach(cm => { if (!cm.gen) c[cm.sev] = (c[cm.sev] || 0) + 1; c.photos += cm.photos.length; }); }));
   return c;
 }
 const dots = c => ["safety", "rec", "maint"].filter(k => c[k]).map(k => `<span class="dot ${k}">${c[k]} ${SEV[k].short}</span>`).join("");
@@ -902,7 +906,7 @@ function secBar(i, cur) {
   <nav class="secbar" aria-label="Sections"><a href="#i-${esc(i.id)}" class="${cur === -1 ? "on" : ""}">Details</a>${i.sections.map((s, n) => `<a href="#i-${esc(i.id)}-s${n}" class="${n === cur ? "on" : ""} ${secDone(s) ? "done" : ""}">${secDone(s) ? ico("check") : ""}${esc(s.name)}</a>`).join("")}<a href="#i-${esc(i.id)}-report" class="${cur === 99 ? "on" : ""}">Report</a></nav></div>`;
 }
 function secList(i) {
-  return `<section class="card"><h3>Sections</h3>${i.sections.map((s, n) => { const pg = secProg(s), f = s.items.reduce((a, it) => { it.comments.forEach(cm => a[cm.sev] = (a[cm.sev] || 0) + 1); return a; }, {});
+  return `<section class="card"><h3>Sections</h3>${i.sections.map((s, n) => { const pg = secProg(s), f = s.items.reduce((a, it) => { it.comments.forEach(cm => { if (!cm.gen) a[cm.sev] = (a[cm.sev] || 0) + 1; }); return a; }, {});
     return `<a class="row secrow" href="#i-${esc(i.id)}-s${n}"><span class="sdot ${secDone(s) ? "ok" : pg.d ? "part" : ""}">${secDone(s) ? ico("check") : pg.d ? pg.d + "/" + pg.n : ""}</span><div class="grow"><b>${esc(s.name)}</b><div class="muted sm">${secDone(s) ? "Complete" : pg.d ? pg.d + " of " + pg.n + " items" : "Not started"}</div></div><div class="dots">${dots(f)}</div>${ico("fwd")}</a>`; }).join("")}</section>`;
 }
 const PAY_HOW = ["e-Transfer", "Cash", "Cheque", "Credit card", "Other"];
@@ -954,8 +958,8 @@ function vSection(i, n) {
     const st = it.st || "", ti = tplItem(sec, it.tpl || it.name), np = presetsFor(sec.key, it.tpl || it.name).length;
     const head = `<div class="ihead"><h3 class="hold" data-hold="item" data-s="${n}" data-k="${k}" title="Press and hold to edit">${esc(it.name)}</h3><button class="icon more" aria-label="Edit ${esc(it.name)}" data-action="itemMenu" data-s="${n}" data-k="${k}">${ico("dots")}</button>`;
     if (done) {
-      const f = it.comments.reduce((a, cm) => { a[cm.sev] = (a[cm.sev] || 0) + 1; return a; }, {});
-      return `<section class="card item compact" id="it${k}">${head}<span class="chip">${statusLbl[st]}</span></div>${it.comments.length ? `<div class="clist">${it.comments.map(cm => `<div class="cline ${esc(cm.sev)}">${esc(cm.title || cm.text.slice(0, 70))}${cm.photos.length ? ` <span class="muted sm">· ${cm.photos.length} photo${cm.photos.length === 1 ? "" : "s"}</span>` : ""}</div>`).join("")}</div>` : ""}</section>`;
+      const f = it.comments.reduce((a, cm) => { if (!cm.gen) a[cm.sev] = (a[cm.sev] || 0) + 1; return a; }, {});
+      return `<section class="card item compact" id="it${k}">${head}<span class="chip">${statusLbl[st]}</span></div>${it.comments.length ? `<div class="clist">${it.comments.map(cm => `<div class="cline ${cm.gen ? "gen" : esc(cm.sev)}">${cm.gen ? "General photos" : esc(cm.title || cm.text.slice(0, 70))}${cm.photos.length ? ` <span class="muted sm">· ${cm.photos.length} photo${cm.photos.length === 1 ? "" : "s"}</span>` : ""}</div>`).join("")}</div>` : ""}</section>`;
     }
     return `<section class="card item ${st === "NP" ? "np" : st === "NI" ? "ni" : ""}" id="it${k}">
       ${head}<div class="seg" role="group" aria-label="Status">${[["I", "Inspected"], ["NI", "Not insp."], ["NP", "Not present"]].map(([v, l]) => `<button data-action="st" data-s="${n}" data-k="${k}" data-v="${v}" class="${st === v ? "on" : ""}" aria-pressed="${st === v}">${l}</button>`).join("")}</div></div>
@@ -964,7 +968,8 @@ function vSection(i, n) {
       <div class="addbar">
         <button class="btn sm" data-action="preset" data-s="${n}" data-k="${k}">${ico("book")} Comments${np ? " (" + np + ")" : ""}</button>
         <button class="btn sm" data-action="addC" data-s="${n}" data-k="${k}">${ico("pen")} Write</button>
-        <button class="btn sm" data-action="photo" data-s="${n}" data-k="${k}" data-ai="${sample ? 1 : ""}">${ico("camera")} Photo${sample ? " + Claude" : ""}</button>
+        <button class="btn sm" data-action="photo" data-s="${n}" data-k="${k}" data-gen="1" title="General condition photo, no finding">${ico("camera")} Photo</button>
+        ${sample ? `<button class="btn sm" data-action="photo" data-s="${n}" data-k="${k}" data-ai="1" title="Photo of a problem: Claude writes the finding">${ico("spark")} Photo + Claude</button>` : ""}
       </div></section>`;
   }).join("");
   const left = sec.items.filter(it => !it.st).length, nph = photoWheres(i, n).length;
@@ -979,14 +984,20 @@ function vSection(i, n) {
   <div class="actions" style="justify-content:space-between">${n > 0 ? `<a class="btn" href="#i-${id}-s${n - 1}">${ico("back")} ${esc(i.sections[n - 1].name)}</a>` : `<a class="btn" href="#i-${id}">${ico("back")} Details</a>`}<a class="btn ${done ? "primary" : ""}" href="${nextHref}">${esc(nextName)} ${ico("fwd")}</a></div>
   <p class="hint swipehint">Swipe left or right to move between sections. Press and hold an item name to rename, move or remove it.</p>`;
 }
+function phFig(n, k, c, ph, p) { return `<figure class="phw"><div class="ph"><button class="phimg" aria-label="Mark up photo ${p + 1}" data-action="editPh" data-s="${n}" data-k="${k}" data-c="${c}" data-p="${p}">${phSrc(ph) ? `<img src="${esc(phSrc(ph))}" alt="">` : `<span class="spin"></span>`}</button><button class="phx" aria-label="Remove photo" data-action="delPh" data-s="${n}" data-k="${k}" data-c="${c}" data-p="${p}">×</button>${!ph.asset && assets ? '<span class="up">on phone</span>' : !ph.drive && mcp ? '<span class="up">not in Drive</span>' : ""}<span class="pen">${ico("pen")}</span></div>${ph.note ? `<figcaption>${esc(ph.note)}</figcaption>` : ""}</figure>`; }
+function vGenPhotos(n, k, c, cm) {
+  return `<div class="genph"><div class="gh"><b>${ico("camera")} Photos</b><span class="muted sm">General condition, shown in the report</span></div>
+    <div class="photos">${cm.photos.map((ph, p) => phFig(n, k, c, ph, p)).join("")}<button class="addph" data-action="photo" data-s="${n}" data-k="${k}" data-c="${c}">${ico("camera")}<span>Add</span></button></div></div>`;
+}
 function vFinding(i, n, k, c, cm) {
+  if (cm.gen) return vGenPhotos(n, k, c, cm);
   const P = `sections.${n}.items.${k}.comments.${c}`, busy = state.busy[cm.id];
   return `<div class="find ${esc(cm.sev)}">
     <div class="ft"><input aria-label="Finding title" data-b="${P}.title" value="${esc(cm.title)}" placeholder="Finding title"><button class="btn sm ghost" aria-label="Delete finding" data-action="delC" data-s="${n}" data-k="${k}" data-c="${c}">${ico("x")}</button></div>
     <div class="sevs">${Object.keys(SEV).map(s => `<button data-action="sev" data-s="${n}" data-k="${k}" data-c="${c}" data-v="${s}" class="${s} ${cm.sev === s ? "on" : ""}">${SEV[s].label}</button>`).join("")}</div>
     <input aria-label="Location" data-b="${P}.loc" value="${esc(cm.loc || "")}" placeholder="Location (e.g. basement bedroom, north wall)">
     <textarea aria-label="Finding text" data-b="${P}.text" rows="3" placeholder="Describe it, or jot a rough note and tap Claude">${esc(cm.text)}</textarea>
-    <div class="photos">${cm.photos.map((ph, p) => `<figure class="phw"><div class="ph"><button class="phimg" aria-label="Mark up photo ${p + 1}" data-action="editPh" data-s="${n}" data-k="${k}" data-c="${c}" data-p="${p}">${phSrc(ph) ? `<img src="${esc(phSrc(ph))}" alt="">` : `<span class="spin"></span>`}</button><button class="phx" aria-label="Remove photo" data-action="delPh" data-s="${n}" data-k="${k}" data-c="${c}" data-p="${p}">×</button>${!ph.asset && assets ? '<span class="up">on phone</span>' : !ph.drive && mcp ? '<span class="up">not in Drive</span>' : ""}<span class="pen">${ico("pen")}</span></div>${ph.note ? `<figcaption>${esc(ph.note)}</figcaption>` : ""}</figure>`).join("")}
+    <div class="photos">${cm.photos.map((ph, p) => phFig(n, k, c, ph, p)).join("")}
       <button class="addph" data-action="photo" data-s="${n}" data-k="${k}" data-c="${c}">${ico("camera")}<span>Add</span></button></div>
     <div class="actions">${sample ? `<button class="btn sm" data-action="ai" data-s="${n}" data-k="${k}" data-c="${c}" ${busy ? "disabled" : ""}>${busy ? '<span class="spin"></span> Writing…' : ico("spark") + " Claude"}</button>` : ""}
       ${cm._prev ? `<button class="btn sm ghost" data-action="undoAI" data-s="${n}" data-k="${k}" data-c="${c}">Undo Claude</button>` : ""}
@@ -994,7 +1005,7 @@ function vFinding(i, n, k, c, cm) {
   </div>`;
 }
 function allFindings(i) {
-  const out = []; i.sections.forEach((sec, n) => sec.items.forEach((it, k) => it.comments.forEach(cm => out.push({ sec, it, cm, n, k })))); return out;
+  const out = []; i.sections.forEach((sec, n) => sec.items.forEach((it, k) => it.comments.forEach(cm => { if (!cm.gen) out.push({ sec, it, cm, n, k }); }))); return out;
 }
 function vReport(i) {
   const c = counts(i), F = allFindings(i), pub = i.published;
@@ -1021,7 +1032,7 @@ function vReport(i) {
     ${Object.keys(ROLES).some(r => (i.agents || {})[r]) ? `<div class="pagents">${Object.keys(ROLES).map(r => { const ag = liveAgent((i.agents || {})[r]); return ag ? `<div class="pagent">${avatar(ag)}<div><span style="color:#777;font-size:11px">${ROLES[r]}</span><br><b>${esc(agName(ag))}</b><br>${esc(ag.agency || "")}<br>${esc([ag.phone, ag.email].filter(Boolean).join(" · "))}</div></div>` : ""; }).join("")}</div>` : ""}
     ${i.summary ? `<p>${esc(i.summary)}</p>` : ""}
     ${sumList || "<p>No findings recorded yet.</p>"}
-    ${i.sections.map(sec => { const l = sec.items.flatMap(it => it.comments.map(cm => ({ it, cm }))); return l.length ? `<h3>${esc(sec.name)}</h3>${l.map(({ it, cm }) => `<div class="pf ${esc(cm.sev)}"><b>${esc(it.name)} - ${esc(cm.title)}</b>${cm.loc ? ` <span style="color:#666">(${esc(cm.loc)})</span>` : ""}<br>${esc(cm.text)}${cm.photos.length ? `<div class="pimgs">${cm.photos.map(ph => phSrc(ph) ? `<figure><img src="${esc(phSrc(ph))}" alt="">${ph.note ? `<figcaption>${esc(ph.note)}</figcaption>` : ""}</figure>` : "").join("")}</div>` : ""}</div>`).join("")}` : ""; }).join("")}
+    ${i.sections.map(sec => { const l = sec.items.flatMap(it => it.comments.map(cm => ({ it, cm }))); return l.length ? `<h3>${esc(sec.name)}</h3>${l.map(({ it, cm }) => cm.gen ? (cm.photos.length ? `<div class="pgen"><b>${esc(it.name)} - Photos</b><div class="pimgs">${cm.photos.map(ph => phSrc(ph) ? `<figure><img src="${esc(phSrc(ph))}" alt="">${ph.note ? `<figcaption>${esc(ph.note)}</figcaption>` : ""}</figure>` : "").join("")}</div></div>` : "") : `<div class="pf ${esc(cm.sev)}"><b>${esc(it.name)} - ${esc(cm.title)}</b>${cm.loc ? ` <span style="color:#666">(${esc(cm.loc)})</span>` : ""}<br>${esc(cm.text)}${cm.photos.length ? `<div class="pimgs">${cm.photos.map(ph => phSrc(ph) ? `<figure><img src="${esc(phSrc(ph))}" alt="">${ph.note ? `<figcaption>${esc(ph.note)}</figcaption>` : ""}</figure>` : "").join("")}</div>` : ""}</div>`).join("")}` : ""; }).join("")}
   </section>`;
 }
 function vSettings() {
@@ -1234,8 +1245,8 @@ document.addEventListener("click", async e => {
     else if (act === "undo") { const f = state.undo; state.undo = null; $("#toast").className = "toast"; f && f(); }
     else if (act === "opt") { const cur = arr(getPath(i, a.dataset.b)), v = a.dataset.v; setPath(i, a.dataset.b, cur.includes(v) ? cur.filter(x => x !== v) : cur.concat(v)); saveInsp(i); render(); }
     else if (act === "sev") { it.comments[c].sev = a.dataset.v; saveInsp(i); render(); }
-    else if (act === "photo") { photoTarget = { id: i.id, s, k, c: a.dataset.c != null && a.dataset.c !== "" ? c : null, ai: !!a.dataset.ai }; $("#photoIn").click(); }
-    else if (act === "delPh") { const ph = it.comments[c].photos.splice(+a.dataset.p, 1)[0]; saveInsp(i); render(); if (ph && ph.asset && assets) assets.delete(ph.asset).catch(() => {}); }
+    else if (act === "photo") { photoTarget = { id: i.id, s, k, c: a.dataset.c != null && a.dataset.c !== "" ? c : null, ai: !!a.dataset.ai, gen: !!a.dataset.gen }; $("#photoIn").click(); }
+    else if (act === "delPh") { const ph = it.comments[c].photos.splice(+a.dataset.p, 1)[0]; if (it.comments[c].gen && !it.comments[c].photos.length) it.comments.splice(c, 1); saveInsp(i); render(); if (ph && ph.asset && assets) assets.delete(ph.asset).catch(() => {}); }
     else if (act === "ai") aiComment(i, s, k, c);
     else if (act === "undoAI") { const cm = it.comments[c]; Object.assign(cm, cm._prev); delete cm._prev; saveInsp(i); render(); }
     else if (act === "preset") { state.modal = { id: i.id, s, k, q: "", allItems: false }; render(); }
@@ -1586,7 +1597,8 @@ async function buildPdf(i) {
   const para = (t, size, style, rgb, width, x) => { doc.setFont("helvetica", style || "normal"); doc.setFontSize(size || 10.5); setC(rgb || [34, 34, 34]); const lines = doc.splitTextToSize(String(t || ""), width || CW); const lh = (size || 10.5) * 1.35; for (const ln of lines) { need(lh); doc.text(ln, x || M, y + size * .9); y += lh; } };
   const heading = t => { need(40); y += 8; doc.setFont("helvetica", "bold"); doc.setFontSize(16); setC([20, 22, 26]); doc.text(t, M, y + 14); y += 22; doc.setDrawColor(38); doc.setLineWidth(1.5); doc.line(M, y, W - M, y); y += 10; };
   const imgData = {};
-  for (const x of F) for (const ph of x.cm.photos) { const b = await photoBlob(ph); if (b) { try { imgData[ph.id] = await scaleData(b, 1100, .72); } catch (e2) { imgData[ph.id] = await blobToDataURL(b); } } }
+  const FA = []; i.sections.forEach(sec => sec.items.forEach(it => it.comments.forEach(cm => FA.push({ cm }))));
+  for (const x of FA) for (const ph of x.cm.photos) { const b = await photoBlob(ph); if (b) { try { imgData[ph.id] = await scaleData(b, 1100, .72); } catch (e2) { imgData[ph.id] = await blobToDataURL(b); } } }
   // cover
   const logoB = s.logo && await photoBlob(s.logo), meB = s.mePhoto && await photoBlob(s.mePhoto);
   let logoD = null; if (logoB) { try { logoD = await blobToDataURL(logoB); } catch (x) {} }
@@ -1656,12 +1668,16 @@ async function buildPdf(i) {
     sec.items.forEach((it, n) => { const col = n < half ? 0 : 1, row = n < half ? n : n - half, x = M + col * (CW / 2), yy = y + row * 14; doc.setFontSize(9.5); doc.setFont("helvetica", "normal"); doc.setTextColor(34); doc.text(doc.splitTextToSize(it.name, CW / 2 - 92)[0], x, yy + 10); doc.setTextColor(it.st === "I" ? 43 : 140, it.st === "I" ? 138 : 140, it.st === "I" ? 62 : 140); doc.text(stTxt[it.st || ""], x + CW / 2 - 12, yy + 10, { align: "right" }); });
     y += half * 14 + 10;
     const list = sec.items.flatMap(it => it.comments.map(cm => ({ it, cm })));
-    if (!list.length) { para("No findings in this section.", 10, "italic", [110, 110, 110]); continue; }
+    if (!list.some(x => !x.cm.gen)) para("No findings in this section.", 10, "italic", [110, 110, 110]);
     for (const { it, cm } of list) {
-      need(60); y += 6; barTop = y; barRgb = SEV[cm.sev].rgb;
+      if (cm.gen && !cm.photos.some(ph => imgData[ph.id])) continue;
+      need(cm.gen ? 120 : 60); y += 6; barTop = y; barRgb = cm.gen ? [200, 204, 209] : SEV[cm.sev].rgb;
+      if (cm.gen) para(`${it.name} - Photos`, 10.5, "bold", [60, 64, 70], CW - 14, M + 12);
+      else {
       para(`${it.name} - ${cm.title || SEV[cm.sev].label}`, 11, "bold", [20, 22, 26], CW - 14, M + 12);
       para(SEV[cm.sev].label + (cm.loc ? "  ·  Location: " + cm.loc : ""), 8.5, "bold", SEV[cm.sev].rgb, CW - 14, M + 12);
       para(cm.text, 10, "normal", [34, 34, 34], CW - 14, M + 12);
+      }
       // photos two per row
       const ps = cm.photos.filter(ph => imgData[ph.id]);
       for (let p = 0; p < ps.length; p += 2) {
