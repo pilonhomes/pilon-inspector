@@ -61,6 +61,19 @@ textarea { resize:vertical; }
 .card > .row:first-of-type, .card > h3 + .row, .card > h4 + .row { border-top:0; }
 .grow { flex:1; }
 .row .end { text-align:right; display:grid; justify-items:end; gap:3px; }
+.tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:5px; } .tag { display:inline-flex; align-items:center; gap:3px; font:600 11.5px var(--body); padding:2px 8px; border-radius:99px; white-space:nowrap; }
+.tag .ico { width:12px; height:12px; } .tag.ok { background:color-mix(in srgb, var(--ok) 14%, transparent); color:var(--ok); } .tag.warn { background:color-mix(in srgb, var(--rec) 15%, transparent); color:var(--rec); }
+.strow { display:flex; gap:10px; align-items:center; flex-wrap:wrap; } .strow .seg button { min-height:38px; padding:0 12px; }
+.warnb { display:flex; gap:10px; align-items:center; border-left:4px solid var(--rec); }
+.blogo { height:30px; max-width:150px; object-fit:contain; display:block; } .bme { width:32px; height:32px; border-radius:99px; object-fit:cover; flex:none; }
+.brandrow { display:flex; gap:14px; flex-wrap:wrap; } .brandslot { display:grid; gap:8px; justify-items:start; } .brandslot .prev { width:150px; height:84px; border:1px dashed var(--line); border-radius:10px; display:grid; place-items:center; background:#fff; overflow:hidden; }
+.brandslot .prev img { max-width:100%; max-height:100%; object-fit:contain; } .brandslot .prev.me { width:84px; border-radius:99px; } .brandslot .prev.me img { width:100%; height:100%; object-fit:cover; }
+.plogo { max-height:54px; max-width:200px; object-fit:contain; } .pme { width:54px; height:54px; border-radius:99px; object-fit:cover; }
+.swrow { position:relative; overflow:hidden; border-top:1px solid var(--line); touch-action:pan-y; } .card > .swrow:first-of-type { border-top:0; }
+.swrow > .row { -webkit-user-drag:none; user-select:none; -webkit-user-select:none; position:relative; z-index:1; background:var(--card); border-top:0; transition:transform .2s ease; padding-left:2px; padding-right:2px; }
+.swdel { position:absolute; inset:0 0 0 auto; width:96px; border:0; background:#d9363e; color:#fff; font:700 13px var(--body); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; cursor:pointer; }
+.swdel .ico { width:20px; height:20px; } .swrow.far .swdel, .swrow.going .swdel { width:100%; } .swrow.going { transition:opacity .18s; opacity:.4; }
+.gone summary { cursor:pointer; font-weight:700; padding:4px 2px; } .gone .row { flex-wrap:wrap; }
 .chip { display:inline-block; font:600 11.5px var(--body); padding:2px 8px; border-radius:99px; background:var(--soft); color:var(--muted); white-space:nowrap; }
 .dots { display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end; }
 .dot { font:700 11.5px var(--body); padding:1px 7px; border-radius:99px; color:#fff; white-space:nowrap; }
@@ -144,7 +157,7 @@ textarea { resize:vertical; }
 .banner.netb { display:flex; gap:10px; align-items:center; flex-wrap:wrap; border:1px solid color-mix(in srgb, var(--rec) 40%, var(--line)); }
 .banner.netb.off { border-color:color-mix(in srgb, var(--safety) 45%, var(--line)); }
 body.noscroll { overflow:hidden; }
-.ed { position:fixed; inset:0; z-index:40; background:#111; color:#fff; display:grid; grid-template-rows:auto minmax(0,1fr) auto auto; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
+.ed { position:fixed; inset:0; z-index:40; background:#111; color:#fff; display:grid; grid-template-rows:auto minmax(0,1fr) auto auto auto; padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom); }
 .ed[hidden] { display:none; }
 .edtop { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; gap:8px; }
 .edlight { color:#fff; border-color:#444; }
@@ -157,6 +170,14 @@ body.noscroll { overflow:hidden; }
 .edtool.on { background:#fff; color:#111; border-color:#fff; }
 .edsw { flex:none; width:34px; height:34px; border-radius:99px; border:2px solid #555; cursor:pointer; } .edsw.on { outline:3px solid #fff; outline-offset:2px; }
 .edw { flex:none; width:40px; height:40px; border-radius:9px; border:1px solid #444; background:#23272c; display:grid; place-items:center; cursor:pointer; } .edw i { width:22px; background:#ddd; border-radius:4px; display:block; } .edw.on { border-color:#fff; background:#3a3f45; }
+.ednav { display:flex; align-items:center; gap:6px; min-width:0; } .ednav .edtool { min-height:36px; padding:0 12px; font-size:20px; line-height:1; }
+.edttl { display:grid; text-align:center; line-height:1.15; min-width:0; } .edttl span { font-size:12px; color:#aaa; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:42vw; }
+.edstage { position:relative; touch-action:none; } #edspin { position:absolute; } #edspin[hidden] { display:none; }
+.edfilm { display:flex; gap:6px; overflow-x:auto; padding:4px 12px 6px; touch-action:pan-x; }
+.edth { position:relative; flex:none; width:54px; height:54px; border-radius:8px; overflow:hidden; border:2px solid transparent; padding:0; background:#23272c; cursor:pointer; }
+.edth img { width:100%; height:100%; object-fit:cover; display:block; } .edth.on { border-color:#fff; }
+.edth.dirty i { position:absolute; top:4px; right:4px; width:9px; height:9px; border-radius:9px; background:var(--accent); box-shadow:0 0 0 2px #111; }
+.edtool:disabled { opacity:.4; cursor:default; } .edhint { font-size:13px; color:#ccc; } .edbar .sp { flex:1; }
 .edsep { width:1px; height:28px; background:#444; flex:none; margin:0 2px; }
 .ednote { display:grid; gap:4px; font-size:12.5px; color:#bbb; } .ednote input { background:#23272c; color:#fff; border-color:#444; }
 .opts { display:flex; flex-wrap:wrap; gap:5px; }
@@ -196,7 +217,7 @@ nav.nav a.on { color:var(--accent); }
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-<header class="top"><div class="brand">Pilon Homes <span>Inspector</span></div><div class="sp"></div><span class="sync" id="sync"></span></header>
+<header class="top"><div class="brand" id="brand">Pilon Homes <span>Inspector</span></div><div class="sp"></div><span class="sync" id="sync"></span><span id="me"></span></header>
 <main id="view"></main>
 <nav class="nav" id="nav"></nav>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -674,8 +695,12 @@ async function pullQueue(quiet) {
       const id = "j_" + String(job.jobId).replace(/[^a-z0-9_-]/gi, "");
       const have = curInsp(id);
       const base = { jobId: job.jobId, number: String(job.number || ""), project: String(job.project || "Home inspection"), client: { name: String(job.client && job.client.name || ""), email: String(job.client && job.client.email || ""), phone: String(job.client && job.client.phone || "") }, address: String(job.address || ""), town: String(job.town || ""), when: String(job.when || ""), services: Array.isArray(job.services) ? job.services.map(String).slice(0, 12) : [], driveRoot: String(job.driveRoot || "") };
-      if (have) { Object.assign(have, base); saveInsp(have); updated++; }
-      else { const n = newInspection(Object.assign({ id }, base)); state.list.push(n); saveDoc("inspections/" + id, n); added++; }
+      const stOf = (v, at) => v && typeof v === "object" ? { on: !!(v.signed || v.paid || v.done), at: v.at || v.date || null, how: v.how || v.method || "" } : { on: !!v, at: at || null, how: "" };
+      const sg = stOf(job.agreement !== undefined ? job.agreement : job.agreementSigned, job.agreementAt), pd = stOf(job.paid !== undefined ? job.paid : job.payment, job.paidAt);
+      const toMs = t => { const d = t ? new Date(t).getTime() : NaN; return isNaN(d) ? Date.now() : d; };
+      const applySt = I => { if (sg.on && !(I.agreement || {}).signed) I.agreement = { signed: true, at: toMs(sg.at), src: "office" }; if (pd.on && !(I.payment || {}).paid) I.payment = { paid: true, at: toMs(pd.at), how: String(pd.how || ""), src: "office" }; };
+      if (have) { Object.assign(have, base); applySt(have); if (have.deletedAt) delete have.deletedAt; saveInsp(have); updated++; }
+      else { const n = newInspection(Object.assign({ id }, base)); applySt(n); state.list.push(n); saveDoc("inspections/" + id, n); added++; }
       if (job.driveRoot && !S().driveRoot) S().driveRoot = String(job.driveRoot);
       seen.push(f.id);
     }
@@ -687,14 +712,14 @@ async function pullQueue(quiet) {
 
 // ---------- photos ----------
 let photoTarget = null;
-async function compress(file, max, q) {
+async function compress(file, max, q, mime) {
   const url = URL.createObjectURL(file);
   try {
     const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; });
     const k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
     const c = document.createElement("canvas"); c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
     c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-    const blob = await new Promise(r => c.toBlob(r, "image/jpeg", q || .8));
+    const blob = await new Promise(r => c.toBlob(r, mime || "image/jpeg", q || .8));
     return { blob, w: c.width, h: c.height };
   } finally { URL.revokeObjectURL(url); }
 }
@@ -713,6 +738,7 @@ async function storeBlob(blob, w, h, itemName) {
 async function addPhotos(files) {
   const t = photoTarget; if (!t) return;
   if (t.kind === "cover") { const i = curInsp(t.id); if (!i) return; state.busy.cover = true; render(); try { const ph = await storePhoto(files[0], Math.max(1600, photoSize()[0]), "Cover photo", .8); i.cover = ph; saveInsp(i); queueDrive(i, ph, "Cover photo"); } catch (x) { toast("Couldn't read that photo.", "err"); } state.busy.cover = false; render(); return; }
+  if (t.kind === "brand") { try { const logo = t.field === "logo", { blob, w, h } = await compress(files[0], logo ? 900 : 600, logo ? 1 : .82, logo ? "image/png" : "image/jpeg"); const ph = await storeBlob(blob, w, h, logo ? "Logo" : "Inspector photo"); S()[t.field] = { asset: ph.asset, url: ph.url, w: ph.w, h: ph.h, id: ph.id, png: logo }; saveSettings(); render(); toast(logo ? "Logo saved." : "Photo saved."); } catch (x) { toast("Couldn't read that picture.", "err"); } return; }
   if (t.kind === "agent") { const ag = state.agents.find(a => a.id === t.id); if (!ag) return; try { const ph = await storePhoto(files[0], 600); ag.photo = { asset: ph.asset, url: ph.url, w: ph.w, h: ph.h, id: ph.id }; if (!ag._local) { await saveDoc("agents/" + ag.id, ag); refreshAgentSnaps(ag); } render(); } catch (x) { toast("Couldn't read that photo.", "err"); } return; }
   const i = curInsp(t.id); if (!i) return;
   const it = i.sections[t.s].items[t.k];
@@ -727,7 +753,9 @@ async function addPhotos(files) {
     } catch (x) { toast("Couldn't read that photo.", "err"); }
   }
   state.busy.photo = false; render();
-  if (t.ai && sample && cm.photos.length) aiComment(i, t.s, t.k, it.comments.indexOf(cm));
+  const ai = t.ai && sample && cm.photos.length;
+  if (ai) await aiComment(i, t.s, t.k, it.comments.indexOf(cm));
+  if (files.length > 1) { const c0 = it.comments.indexOf(cm), first = cm.photos.length - files.length; if (c0 >= 0 && first >= 0) actToast((ai ? "Claude wrote the finding. " : "") + files.length + " photos added.", "Mark them up", () => { const I = curInsp(t.id); if (I) openEditor(I, { s: t.s, k: t.k, c: c0, p: first }, photoWheres(I, t.s)); }); }
 }
 const driveQ = []; let driving = false;
 function queueDrive(i, ph, itemName) { if (!mcp || ph.drive || driveQ.some(q => q.ph.id === ph.id)) return; driveQ.push({ i, ph, itemName }); pumpDrive(); }
@@ -817,17 +845,34 @@ function counts(i) {
   return c;
 }
 const dots = c => ["safety", "rec", "maint"].filter(k => c[k]).map(k => `<span class="dot ${k}">${c[k]} ${SEV[k].short}</span>`).join("");
+const KEEP_DAYS = 30, DAY = 86400000 * (window.__dayScale || 1);
+const daysLeft = i => Math.max(1, Math.ceil((i.deletedAt + KEEP_DAYS * DAY - Date.now()) / DAY));
+function softDelete(i) {
+  if (!i || i.deletedAt) return; i.deletedAt = Date.now(); saveInsp(i);
+  if (state.lastInsp === i.id) state.lastInsp = null;
+  undoToast("Moved to Recently deleted. Kept for 30 days.", () => { delete i.deletedAt; saveInsp(i); render(); });
+}
+async function hardDelete(i) { (state.tomb = state.tomb || {})[i.id] = 1; state.list = state.list.filter(x => x !== i); await deleteDoc("inspections/" + i.id); }
+function purgeOld() { if (!state.loaded) return; const old = state.list.filter(i => i.deletedAt && Date.now() - i.deletedAt > KEEP_DAYS * DAY); if (!old.length) return; old.forEach(hardDelete); softRender(); }
+setTimeout(purgeOld, 6000); setInterval(purgeOld, 10 * 60000);
 function vHome() {
   if (!state.loaded) return `<div class="empty"><span class="spin"></span><p>Loading your inspections…</p></div>`;
-  const list = state.list.slice().sort((a, b) => String(a.when || "9").localeCompare(String(b.when || "9")));
+  const list = state.list.filter(i => !i.deletedAt).sort((a, b) => String(a.when || "9").localeCompare(String(b.when || "9")));
+  const gone = state.list.filter(i => i.deletedAt).sort((a, b) => b.deletedAt - a.deletedAt);
+  if (gone.some(i => Date.now() - i.deletedAt > KEEP_DAYS * DAY)) setTimeout(purgeOld, 0);
   const active = list.filter(i => i.status !== "Published"), done = list.filter(i => i.status === "Published").reverse();
-  const row = i => { const c = counts(i); return `<a class="row" href="#i-${esc(i.id)}"><div class="grow"><b>${esc(i.address || "No address yet")}</b>${i.town ? `<span class="muted">, ${esc(i.town)}</span>` : ""}<div class="muted sm">${esc(fmtWhen(i.when))} · ${esc(i.client.name || "No client")}${i.number ? " · #" + esc(i.number) : ""}</div>${i.status !== "Published" && c.done ? `<div class="prog" style="margin-top:6px"><i style="width:${Math.round(c.done / c.total * 100)}%"></i></div>` : ""}</div><div class="end"><span class="chip">${esc(i.status)}</span><div class="dots">${dots(c)}</div></div></a>`; };
+  const row = i => { const c = counts(i); return `<div class="swrow" data-id="${esc(i.id)}"><button class="swdel" data-action="softDel" data-id="${esc(i.id)}" tabindex="-1">${ico("trash")} Delete</button><a class="row" href="#i-${esc(i.id)}"><div class="grow"><b>${esc(i.address || "No address yet")}</b>${i.town ? `<span class="muted">, ${esc(i.town)}</span>` : ""}<div class="muted sm">${esc(fmtWhen(i.when))} · ${esc(i.client.name || "No client")}${i.number ? " · #" + esc(i.number) : ""}</div><div class="tags">${jobTags(i)}</div>${i.status !== "Published" && c.done ? `<div class="prog" style="margin-top:6px"><i style="width:${Math.round(c.done / c.total * 100)}%"></i></div>` : ""}</div><div class="end"><span class="chip">${esc(i.status)}</span><div class="dots">${dots(c)}</div></div></a></div>`; };
   return `<div class="bar"><h2>Inspections</h2><div class="actions">
     ${mcp ? `<button class="btn sm" data-action="pull" ${state.busy.pull ? "disabled" : ""}>${state.busy.pull ? '<span class="spin"></span>' : ico("sync")} Get from Office</button>` : ""}
     <button class="btn sm primary" data-action="new">${ico("plus")} New</button></div></div>
   ${!mcp ? `<div class="banner">Google Drive isn't connected here, so jobs from Pilon Office and photo filing are off. Inspections still save in the app.</div>` : ""}
   <section class="card">${active.length ? active.map(row).join("") : `<div class="empty"><p>${done.length ? "No open inspections." : "No inspections yet."} In Pilon Office, open an inspection job and tap <b>Send to Inspector</b>, then tap <b>Get from Office</b> here. Or start one with <b>New</b>.</p></div>`}</section>
-  ${done.length ? `<h4 class="pad">Published reports</h4><section class="card">${done.slice(0, 30).map(row).join("")}</section>` : ""}`;
+  ${done.length ? `<h4 class="pad">Published reports</h4><section class="card">${done.slice(0, 30).map(row).join("")}</section>` : ""}
+  ${list.length ? `<p class="hint swipehint">Swipe a report left to delete it. Deleted reports are kept for 30 days.</p>` : ""}
+  ${gone.length ? `<details class="card gone" ${state.openGone ? "open" : ""}><summary data-action="goneToggle">Recently deleted (${gone.length})</summary>
+    ${gone.map(i => `<div class="row"><div class="grow"><b>${esc(i.address || "No address yet")}</b>${i.town ? `<span class="muted">, ${esc(i.town)}</span>` : ""}<div class="muted sm">${esc(i.client && i.client.name || "")}${i.client && i.client.name ? " · " : ""}Deleted ${esc(fmtDay(i.deletedAt))} · gone for good in ${daysLeft(i)} day${daysLeft(i) === 1 ? "" : "s"}</div></div>
+      <div class="actions"><button class="btn sm" data-action="restoreInsp" data-id="${esc(i.id)}">Restore</button><button class="btn sm danger ghost" data-action="purgeInsp" data-id="${esc(i.id)}">Delete now</button></div></div>`).join("")}
+    <p class="hint">Reports here are deleted for good 30 days after you delete them. Their photos stay in your Google Drive.</p></details>` : ""}`;
 }
 function fld(label, bind, val, o) {
   o = o || {}; const id = "f_" + bind.replace(/[^a-z0-9]/gi, "_");
@@ -860,13 +905,31 @@ function secList(i) {
   return `<section class="card"><h3>Sections</h3>${i.sections.map((s, n) => { const pg = secProg(s), f = s.items.reduce((a, it) => { it.comments.forEach(cm => a[cm.sev] = (a[cm.sev] || 0) + 1); return a; }, {});
     return `<a class="row secrow" href="#i-${esc(i.id)}-s${n}"><span class="sdot ${secDone(s) ? "ok" : pg.d ? "part" : ""}">${secDone(s) ? ico("check") : pg.d ? pg.d + "/" + pg.n : ""}</span><div class="grow"><b>${esc(s.name)}</b><div class="muted sm">${secDone(s) ? "Complete" : pg.d ? pg.d + " of " + pg.n + " items" : "Not started"}</div></div><div class="dots">${dots(f)}</div>${ico("fwd")}</a>`; }).join("")}</section>`;
 }
+const PAY_HOW = ["e-Transfer", "Cash", "Cheque", "Credit card", "Other"];
+const fmtDay = t => t ? new Date(t).toLocaleDateString("en-CA", { month: "short", day: "numeric", year: "numeric" }) : "";
+function jobTags(i) {
+  const ag = i.agreement || {}, pay = i.payment || {};
+  return `<span class="tag ${ag.signed ? "ok" : "warn"}">${ag.signed ? ico("check") + " Signed" : "Not signed"}</span><span class="tag ${pay.paid ? "ok" : "warn"}">${pay.paid ? ico("check") + " Paid" : "Unpaid"}</span>`;
+}
+function vStatusCard(i) {
+  const ag = i.agreement || {}, pay = i.payment || {};
+  const seg = (act, on, a, b) => `<div class="seg" role="group"><button data-action="${act}" data-v="0" class="${on ? "" : "on"}" aria-pressed="${!on}">${a}</button><button data-action="${act}" data-v="1" class="${on ? "on" : ""}" aria-pressed="${!!on}">${b}</button></div>`;
+  return `<section class="card"><h3>Agreement & payment</h3>
+    <div class="strow"><div class="grow"><b>Inspection agreement</b><div class="muted sm">${ag.signed ? "Signed" + (ag.at ? " " + esc(fmtDay(ag.at)) : "") + (ag.src === "office" ? " · from Pilon Office" : "") : "Not signed yet"}</div></div>${seg("agr", ag.signed, "Not signed", "Signed")}</div>
+    <div class="strow"><div class="grow"><b>Payment</b><div class="muted sm">${pay.paid ? "Paid" + (pay.at ? " " + esc(fmtDay(pay.at)) : "") + (pay.how ? " · " + esc(pay.how) : "") + (pay.src === "office" ? " · from Pilon Office" : "") : "Not paid yet"}</div></div>${seg("paid", pay.paid, "Unpaid", "Paid")}</div>
+    ${pay.paid ? fld("How it was paid", "payment.how", pay.how || "", { options: [""].concat(PAY_HOW) }) : ""}
+    ${i.jobId ? `<p class="hint">Re-send the job from Pilon Office and tap Get from Office to bring its status over.</p>` : ""}
+  </section>`;
+}
 function vInsp(i) {
   const c = counts(i), f = i.facts;
   return `<div class="bar"><a class="back" href="#home">${ico("back")} Inspections</a><span class="chip">${esc(i.status)}</span></div>
+  ${i.deletedAt ? `<div class="banner warnb"><div class="grow"><b>This inspection is deleted.</b> It will be gone for good in ${daysLeft(i)} day${daysLeft(i) === 1 ? "" : "s"}.</div><button class="btn sm" data-action="restoreInsp" data-id="${esc(i.id)}">Restore</button></div>` : ""}
   <h2>${esc(i.address || "New inspection")}</h2><div class="muted sm">${esc(fmtWhen(i.when))}${i.number ? " · Office job #" + esc(i.number) : ""}</div>
+  <div class="tags">${jobTags(i)}</div>
   ${secBar(i, -1)}
   ${vCoverCard(i)}
-  <div class="actions"><a class="btn primary" href="#i-${esc(i.id)}-s${Math.max(0, i.sections.findIndex(s => !secDone(s)))}">${c.done ? "Continue" : "Start inspection"} ${ico("fwd")}</a><a class="btn" href="#i-${esc(i.id)}-report">${ico("doc")} Report</a></div>
+  <div class="actions"><a class="btn primary" href="#i-${esc(i.id)}-s${Math.max(0, i.sections.findIndex(s => !secDone(s)))}">${c.done ? "Continue" : "Start inspection"} ${ico("fwd")}</a><a class="btn" href="#i-${esc(i.id)}-report">${ico("doc")} Report</a>${photoWheres(i).length > 1 ? `<button class="btn" data-action="editAll">${ico("pen")} Mark up all photos (${photoWheres(i).length})</button>` : ""}</div>
   ${secList(i)}
   <section class="card"><h3>Property & client</h3>
     ${fld("Address", "address", i.address)}
@@ -875,13 +938,14 @@ function vInsp(i) {
     <div class="grid2">${fld("Client email", "client.email", i.client.email, { type: "email" })}${fld("Client phone", "client.phone", i.client.phone, { type: "tel" })}</div>
     ${i.services.length ? `<p class="hint">Services from Office: ${esc(i.services.join(" · "))}</p>` : ""}
   </section>
+  ${vStatusCard(i)}
   ${vAgentsCard(i)}
   <section class="card"><h3>Inspection details</h3>
     ${DETAILS.map(d => infoField(d, "facts." + fkey(d.label), f[fkey(d.label)])).join("")}
     <div class="grid2">${fld("Year built (approx.)", "facts.built", f.built, { type: "number" })}${fld("Size (sq ft)", "facts.sqft", f.sqft, { type: "number" })}</div>
     ${fld("Utilities", "facts.utilities", f.utilities, { options: ["On", "Water off", "Gas off", "Power off", "All off"] })}
   </section>
-  <div class="actions"><button class="btn danger ghost" data-action="delInsp">${ico("trash")} Delete inspection</button></div>`;
+  <div class="actions"><button class="btn danger ghost" data-action="delInsp">${ico("trash")} Delete inspection</button></div><p class="hint">Deleted inspections are kept in Recently deleted for 30 days.</p>`;
 }
 function vSection(i, n) {
   const sec = i.sections[n], done = secDone(sec), pg = secProg(sec), id = esc(i.id);
@@ -903,12 +967,12 @@ function vSection(i, n) {
         <button class="btn sm" data-action="photo" data-s="${n}" data-k="${k}" data-ai="${sample ? 1 : ""}">${ico("camera")} Photo${sample ? " + Claude" : ""}</button>
       </div></section>`;
   }).join("");
-  const left = sec.items.filter(it => !it.st).length;
+  const left = sec.items.filter(it => !it.st).length, nph = photoWheres(i, n).length;
   const nextHref = n < i.sections.length - 1 ? `#i-${id}-s${n + 1}` : `#i-${id}-report`, nextName = n < i.sections.length - 1 ? i.sections[n + 1].name : "Report";
   return `<div class="bar"><a class="back" href="#i-${id}">${ico("back")} ${esc(i.address || "Inspection")}</a>${state.busy.photo ? '<span class="sm muted"><span class="spin"></span> Saving photo…</span>' : ""}</div>
   ${secBar(i, n)}
   <div class="bar"><h2>${esc(sec.name)}</h2>${done ? `<span class="chip okc">${ico("check")} Complete</span>` : `<span class="chip">${pg.d} of ${pg.n} items</span>`}</div>
-  ${done ? `<div class="banner okb"><div class="grow"><b>Section complete.</b> Found something new? Reopen it to edit, add findings or photos.</div><button class="btn sm" data-action="reopen" data-s="${n}">${ico("pen")} Edit section</button></div>` : `<div class="actions"><button class="btn sm ghost" data-action="allI" data-s="${n}">Mark the rest inspected</button></div>`}
+  ${done ? `<div class="banner okb"><div class="grow"><b>Section complete.</b> Found something new? Reopen it to edit, add findings or photos.</div><button class="btn sm" data-action="reopen" data-s="${n}">${ico("pen")} Edit section</button></div>` : `<div class="actions"><button class="btn sm ghost" data-action="allI" data-s="${n}">Mark the rest inspected</button>${nph > 1 ? `<button class="btn sm ghost" data-action="editAll" data-s="${n}">${ico("pen")} Mark up ${nph} photos</button>` : ""}</div>`}
   ${items}
   ${done ? "" : `<button class="btn ghost addItem" data-action="addItem" data-s="${n}">${ico("plus")} Add item to ${esc(sec.name)}</button>
   <section class="card donebox">${left ? `<p class="hint">${left} item${left === 1 ? " has" : "s have"} no status yet.</p><div class="actions"><button class="btn primary" data-action="complete" data-s="${n}" data-fill="1">${ico("check")} Mark rest inspected & complete</button><button class="btn" data-action="complete" data-s="${n}">Complete anyway</button></div>` : `<div class="actions"><button class="btn primary" data-action="complete" data-s="${n}">${ico("check")} Complete ${esc(sec.name)}</button></div>`}</section>`}
@@ -939,6 +1003,7 @@ function vReport(i) {
   return `<div class="bar"><a class="back" href="#i-${esc(i.id)}">${ico("back")} ${esc(i.address || "Inspection")}</a><span class="chip">${esc(i.status)}</span></div>
   ${secBar(i, 99)}
   <h2>Report</h2>
+  ${!(i.agreement || {}).signed || !(i.payment || {}).paid ? `<div class="banner warnb"><div class="grow"><b>Before you send it:</b> ${[!(i.agreement || {}).signed && "the agreement isn't signed", !(i.payment || {}).paid && "the inspection isn't paid"].filter(Boolean).join(" and ")}. You can still make the report.</div><a class="btn sm" href="#i-${esc(i.id)}">Update</a></div>` : ""}
   ${missing ? `<div class="banner">${missing} item${missing === 1 ? " has" : "s have"} no status yet. They'll show as "Not inspected" in the report.</div>` : ""}
   <section class="card"><div class="bar"><h3>Summary</h3>${sample ? `<button class="btn sm" data-action="aiSum" ${state.busy.sum ? "disabled" : ""}>${state.busy.sum ? '<span class="spin"></span> Writing…' : ico("spark") + " Draft with Claude"}</button>` : ""}</div>
     ${fld("Opening summary for the client", "summary", i.summary, { area: true, rows: 5, ph: "Overall condition and the key items." })}</section>
@@ -947,11 +1012,10 @@ function vReport(i) {
     <div class="actions"><button class="btn primary" data-action="publish" ${state.busy.pdf ? "disabled" : ""}>${state.busy.pdf ? '<span class="spin"></span> ' + esc(state.busy.pdf) : ico("doc") + " Make PDF & save to Drive"}</button>
     ${downloads ? `<button class="btn" data-action="dl" ${state.busy.pdf ? "disabled" : ""}>${ico("down")} Download PDF</button>` : ""}</div>
     ${pub ? `<div class="banner">Saved ${esc(new Date(pub.at).toLocaleString("en-CA"))} · <a href="${esc(pub.url.startsWith("https://") ? pub.url : "#")}" target="_blank" rel="noopener">Open in Drive</a>${pub.shared ? " · shared with " + esc(pub.shared) : ""}</div>
-    <div class="actions">${i.client.email ? `<button class="btn" data-action="share">${ico("share")} Share with ${esc(i.client.email)}</button>` : `<p class="hint">Add the client's email on the Details tab to share the report from here.</p>`}
-      ${Object.keys(ROLES).map(r => { const ag = liveAgent((i.agents || {})[r]); return ag && ag.email ? `<button class="btn" data-action="shareAgent" data-role="${r}">${ico("share")} Share with ${esc(agName(ag))}</button>` : ""; }).join("")}</div>` : ""}
+    <div class="actions">${i.client.email ? `<button class="btn" data-action="share">${ico("share")} Share with ${esc(i.client.email)}</button>` : `<p class="hint">Add the client's email on the Details tab to share the report from here.</p>`}</div>` : ""}
   </section>
   <section class="paper" aria-label="Report preview">
-    <div class="bar"><b style="font:800 20px var(--display)">${esc(S().bizName)}</b><span>${esc(fmtWhen(i.when))}</span></div>
+    <div class="bar">${S().logo && phSrc(S().logo) ? `<img class="plogo" src="${esc(phSrc(S().logo))}" alt="${esc(S().bizName)}">` : `<b style="font:800 20px var(--display)">${esc(S().bizName)}</b>`}<div style="display:flex;gap:10px;align-items:center;text-align:right"><span>${esc(S().inspector || "")}<br><span style="color:#777;font-size:12px">${esc(fmtWhen(i.when))}</span></span>${S().mePhoto && phSrc(S().mePhoto) ? `<img class="pme" src="${esc(phSrc(S().mePhoto))}" alt="">` : ""}</div></div>
     ${i.cover && phSrc(i.cover) ? `<img class="pcover" src="${esc(phSrc(i.cover))}" alt="">` : ""}
     <div><b>Home Inspection Report</b> · ${esc(i.address)}${i.town ? ", " + esc(i.town) : ""}<br>Prepared for ${esc(i.client.name || "client")}</div>
     ${Object.keys(ROLES).some(r => (i.agents || {})[r]) ? `<div class="pagents">${Object.keys(ROLES).map(r => { const ag = liveAgent((i.agents || {})[r]); return ag ? `<div class="pagent">${avatar(ag)}<div><span style="color:#777;font-size:11px">${ROLES[r]}</span><br><b>${esc(agName(ag))}</b><br>${esc(ag.agency || "")}<br>${esc([ag.phone, ag.email].filter(Boolean).join(" · "))}</div></div>` : ""; }).join("")}</div>` : ""}
@@ -964,6 +1028,15 @@ function vSettings() {
   const s = S(), custom = s.lib || [];
   return `<h2>Settings</h2>
   ${window.__SA ? window.__SA.settingsCard(esc, ico) : ""}
+  <section class="card"><h3>Logo & your photo</h3>
+    <p class="hint">Shown at the top of the app and on the report cover.</p>
+    <div class="brandrow">
+      <div class="brandslot"><b class="sm">Logo</b><div class="prev">${s.logo && phSrc(s.logo) ? `<img src="${esc(phSrc(s.logo))}" alt="Your logo">` : `<span class="muted sm">No logo</span>`}</div>
+        <div class="actions"><button class="btn sm" data-action="brandPhoto" data-v="logo">${ico("camera")} ${s.logo ? "Change" : "Add logo"}</button>${s.logo ? `<button class="btn sm ghost" data-action="brandRm" data-v="logo">Remove</button>` : ""}</div></div>
+      <div class="brandslot"><b class="sm">Your photo</b><div class="prev me">${s.mePhoto && phSrc(s.mePhoto) ? `<img src="${esc(phSrc(s.mePhoto))}" alt="You">` : `<span class="muted sm">No photo</span>`}</div>
+        <div class="actions"><button class="btn sm" data-action="brandPhoto" data-v="mePhoto">${ico("camera")} ${s.mePhoto ? "Change" : "Add photo"}</button>${s.mePhoto ? `<button class="btn sm ghost" data-action="brandRm" data-v="mePhoto">Remove</button>` : ""}</div></div>
+    </div>
+    <p class="hint">Use a PNG logo with a clear or white background for the cleanest look.</p></section>
   <section class="card"><h3>Report header</h3>
     ${fld("Business name", "set.bizName", s.bizName)}
     <div class="grid2">${fld("Inspector name", "set.inspector", s.inspector)}${fld("Certification / licence #", "set.cert", s.cert, { ph: "e.g. CAHPI, InterNACHI #" })}</div>
@@ -1082,6 +1155,9 @@ function render() {
   if (state.slide) { const d = state.slide; state.slide = 0; if (v.animate && !matchMedia("(prefers-reduced-motion: reduce)").matches) v.animate([{ transform: `translateX(${d * 40}px)`, opacity: .4 }, { transform: "translateX(0)", opacity: 1 }], { duration: 200, easing: "ease-out" }); }
   const tab = r === "settings" ? "settings" : r === "agents" ? "agents" : r.startsWith("i-") ? "insp" : "home";
   const cur = r.startsWith("i-") ? r.match(/^i-(.+?)(?:-(s\d+|report))?$/) : null;
+  { const lg = S().logo && phSrc(S().logo), me = S().mePhoto && phSrc(S().mePhoto), b = $("#brand"), m = $("#me");
+    const bh = lg ? `<img class="blogo" src="${esc(lg)}" alt="${esc(S().bizName || "Logo")}">` : `Pilon Homes <span>Inspector</span>`, mh = me ? `<img class="bme" src="${esc(me)}" alt="${esc(S().inspector || "Inspector")}">` : "";
+    if (b.dataset.h !== bh) { b.innerHTML = bh; b.dataset.h = bh; } if (m.dataset.h !== mh) { m.innerHTML = mh; m.dataset.h = mh; } }
   $("#nav").innerHTML = [["home", "#home", "list", "Inspections"], ["insp", cur ? "#" + r : (state.list[0] ? "#i-" + state.list[0].id : "#home"), "pen", "Current"], ["agents", "#agents", "people", "Agents"], ["settings", "#settings", "gear", "Settings"]].map(([k, h, ic, l]) => `<a href="${esc(h)}" class="${tab === k ? "on" : ""}">${ico(ic)}<span>${l}</span></a>`).join("");
   updSync();
 }
@@ -1114,7 +1190,11 @@ document.addEventListener("click", async e => {
   try {
     if (act === "new") { const n = newInspection(); state.list.push(n); await saveDoc("inspections/" + n.id, n); go("i-" + n.id); }
     else if (act === "pull") pullQueue(false);
-    else if (act === "delInsp") { if (a.dataset.sure) { (state.tomb = state.tomb || {})[i.id] = 1; await deleteDoc("inspections/" + i.id); state.list = state.list.filter(x => x !== i); go("home"); } else { a.dataset.sure = 1; a.innerHTML = "Tap again to delete for good"; } }
+    else if (act === "delInsp") { softDelete(i); go("home"); }
+    else if (act === "softDel") { swClose(); softDelete(curInsp(a.dataset.id)); render(); }
+    else if (act === "restoreInsp") { const I = curInsp(a.dataset.id); if (I) { delete I.deletedAt; saveInsp(I); toast("Restored."); render(); } }
+    else if (act === "purgeInsp") { if (!a.dataset.sure) { a.dataset.sure = 1; a.textContent = "Tap again: delete for good"; return; } const I = curInsp(a.dataset.id); if (I) { await hardDelete(I); toast("Deleted for good."); render(); } }
+    else if (act === "goneToggle") { state.openGone = !state.openGone; render(); }
     else if (act === "st") { it.st = it.st === a.dataset.v ? "" : a.dataset.v; if (i.status === "Scheduled") i.status = "In progress"; saveInsp(i); render(); }
     else if (act === "allI") { i.sections[s].items.forEach(x => { if (!x.st) x.st = "I"; }); if (i.status === "Scheduled") i.status = "In progress"; saveInsp(i); render(); }
     else if (act === "addC") { it.comments.push({ id: uid(), sev: "rec", title: "", text: "", photos: [] }); if (!it.st) it.st = "I"; saveInsp(i); render(); const t = document.querySelectorAll(`#it${k} .find textarea`); t.length && t[t.length - 1].focus(); }
@@ -1130,10 +1210,15 @@ document.addEventListener("click", async e => {
     else if (act === "agentPhotoRm") { const ag = state.agents.find(x => x.id === state.modal.aid); ag.photo = null; await saveDoc("agents/" + ag.id, ag); render(); }
     else if (act === "agentSave") { const m = state.modal, ag = state.agents.find(x => x.id === m.aid); readAgentForm(ag); if (!ag.first && !ag.last) { toast("Add the agent's name.", "err"); return; } ag._local = false; await saveDoc("agents/" + ag.id, ag); const I = m.insp && curInsp(m.insp); if (I && m.role) selectAgent(I, m.role, ag); refreshAgentSnaps(ag); state.modal = null; render(); toast(agName(ag) + " saved."); }
     else if (act === "agentDel") { if (!a.dataset.sure) { a.dataset.sure = 1; a.textContent = "Tap again to delete"; return; } const ag = state.agents.find(x => x.id === state.modal.aid); state.agents = state.agents.filter(x => x !== ag); await deleteDoc("agents/" + ag.id); state.modal = null; render(); toast(agName(ag) + " deleted."); }
-    else if (act === "shareAgent") { const ag = liveAgent((i.agents || {})[a.dataset.role]); if (ag && ag.email) shareReport(i, a, ag.email); }
     else if (act === "syncNow") { syncAll(); render(); }
+    else if (act === "brandPhoto") { photoTarget = { kind: "brand", field: a.dataset.v === "logo" ? "logo" : "mePhoto" }; $("#photoIn").click(); }
+    else if (act === "brandRm") { const f = a.dataset.v === "logo" ? "logo" : "mePhoto"; S()[f] = null; saveSettings(); render(); }
+    else if (act === "agr") { const on = a.dataset.v === "1"; i.agreement = on ? { signed: true, at: (i.agreement || {}).signed ? i.agreement.at : Date.now(), src: "manual" } : { signed: false }; saveInsp(i); render(); }
+    else if (act === "paid") { const on = a.dataset.v === "1", p0 = i.payment || {}; i.payment = on ? { paid: true, at: p0.paid ? p0.at : Date.now(), how: p0.how || "", src: "manual" } : { paid: false }; saveInsp(i); render(); }
     else if (act.startsWith("sa:") && window.__SA) { await window.__SA.action(act.slice(3), a, { toast, render, syncAll, state, allPhotos, idbDel, saveInsp, saveDoc }); }
-    else if (act === "editPh") openEditor(i, a.dataset.which === "cover" ? { cover: true } : { s, k, c, p: +a.dataset.p });
+    else if (act === "editPh") { if (a.dataset.which === "cover") openEditor(i, { cover: true }); else openEditor(i, { s, k, c, p: +a.dataset.p }, photoWheres(i, s)); }
+    else if (act === "editAll") { const L = photoWheres(i, a.dataset.s != null && a.dataset.s !== "" ? s : null); if (L.length) openEditor(i, L[0], L); }
+    else if (act === "toastGo") { const f = state.toastGo; state.toastGo = null; $("#toast").className = "toast"; f && f(); }
     else if (act === "complete") { const sec = i.sections[s]; if (a.dataset.fill) sec.items.forEach(x => { if (!x.st) x.st = "I"; }); sec.done = true; if (i.status === "Scheduled") i.status = "In progress"; saveInsp(i);
       const all = i.sections.every(secDone); toast(all ? "All sections complete. Time to make the report." : sec.name + " complete."); go(all ? "i-" + i.id + "-report" : "i-" + i.id + "-s" + (i.sections.findIndex((x, q) => q > s && !secDone(x)) >= 0 ? i.sections.findIndex((x, q) => q > s && !secDone(x)) : Math.min(s + 1, i.sections.length - 1))); }
     else if (act === "reopen") { i.sections[s].done = false; saveInsp(i); render(); toast(i.sections[s].name + " reopened for editing."); }
@@ -1176,6 +1261,10 @@ const agentSnap = ag => ({ id: ag.id, first: ag.first || "", last: ag.last || ""
 function selectAgent(I, role, ag) { I.agents = I.agents || {}; I.agents[role] = agentSnap(ag); saveInsp(I); ag.lastUsed = Date.now(); saveDoc("agents/" + ag.id, ag); }
 function refreshAgentSnaps(ag) { for (const I of state.list) for (const r of Object.keys(I.agents || {})) if (I.agents[r] && I.agents[r].id === ag.id && I.status !== "Published") { I.agents[r] = agentSnap(ag); saveInsp(I); } }
 function openItemMenu(i, s, k) { state.modal = { type: "item", id: i.id, s, k }; render(); try { navigator.vibrate && navigator.vibrate(12); } catch (x) {} }
+function actToast(msg, label, fn) {
+  state.toastGo = fn; const t = $("#toast"); t.innerHTML = `<span>${esc(msg)}</span><button class="btn sm" data-action="toastGo">${esc(label)}</button>`; t.className = "toast show act";
+  clearTimeout(toastT); toastT = setTimeout(() => { t.className = "toast"; state.toastGo = null; }, 8000);
+}
 function undoToast(msg, fn) {
   state.undo = fn; const t = $("#toast"); t.innerHTML = `<span>${esc(msg)}</span><button class="btn sm" data-action="undo">Undo</button>`; t.className = "toast show act";
   clearTimeout(toastT); toastT = setTimeout(() => { t.className = "toast"; state.undo = null; }, 7000);
@@ -1195,11 +1284,36 @@ document.addEventListener("contextmenu", e => { if (e.target.closest("[data-hold
 let heldAt = 0;
 document.addEventListener("click", e => { if (held && Date.now() - heldAt < 1500) { held = false; e.stopPropagation(); e.preventDefault(); } held = false; }, true);
 
+// swipe a report row left to reveal Delete; a long swipe deletes straight away
+let rs = null, rsOpen = null, rsClick = 0;
+function swClose(except) { document.querySelectorAll(".swrow.open").forEach(r => { if (r !== except) { r.classList.remove("open"); r.querySelector(".row").style.transform = ""; } }); if (!except) rsOpen = null; }
+document.addEventListener("pointerdown", e => {
+  const r = e.target.closest && e.target.closest(".swrow");
+  if (!r) { if (rsOpen && !e.target.closest(".swdel")) swClose(); return; }
+  if (e.target.closest(".swdel")) return;
+  rs = { r, row: r.querySelector(".row"), x: e.clientX, y: e.clientY, dx: 0, horiz: null, base: r.classList.contains("open") ? -96 : 0, id: e.pointerId };
+});
+document.addEventListener("pointermove", e => {
+  if (!rs || e.pointerId !== rs.id) return; const dx = e.clientX - rs.x, dy = e.clientY - rs.y;
+  if (rs.horiz === null && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) { rs.horiz = Math.abs(dx) > Math.abs(dy) * 1.3; if (rs.horiz) { swClose(rs.r); rs.row.style.transition = "none"; } }
+  if (!rs.horiz) return; rs.dx = dx; const off = Math.min(0, rs.base + dx);
+  rs.row.style.transform = `translateX(${off}px)`; rs.r.classList.toggle("far", off < -Math.min(220, rs.r.clientWidth * .55));
+});
+function rsEnd(e) {
+  if (!rs || (e && e.pointerId !== rs.id)) return; const s0 = rs; rs = null; if (!s0.horiz) return;
+  rsClick = Date.now(); s0.row.style.transition = ""; const off = Math.min(0, s0.base + s0.dx);
+  if (off < -Math.min(220, s0.r.clientWidth * .55)) { s0.r.classList.add("going"); s0.row.style.transform = "translateX(-100%)"; setTimeout(() => { softDelete(curInsp(s0.r.dataset.id)); render(); }, 180); return; }
+  if (off < -48) { s0.r.classList.add("open"); s0.r.classList.remove("far"); s0.row.style.transform = "translateX(-96px)"; rsOpen = s0.r; }
+  else { s0.r.classList.remove("open", "far"); s0.row.style.transform = ""; }
+}
+document.addEventListener("pointerup", rsEnd); document.addEventListener("pointercancel", rsEnd);
+// a swipe or a tap on an open row must not also open the report
+document.addEventListener("click", e => { const r = e.target.closest && e.target.closest(".swrow .row"); if (!r) return; if (Date.now() - rsClick < 400 || r.parentElement.classList.contains("open")) { e.preventDefault(); e.stopImmediatePropagation(); if (Date.now() - rsClick >= 400) swClose(); } }, true);
 // swipe left / right to move between screens
 function pageSeq() {
   const r = route(), m = r.match(/^i-(.+?)(?:-(s\d+|report))?$/), i = m && curInsp(m[1]);
   if (i) return ["i-" + i.id].concat(i.sections.map((s, n) => "i-" + i.id + "-s" + n), ["i-" + i.id + "-report"]);
-  const last = state.lastInsp && curInsp(state.lastInsp);
+  let last = state.lastInsp && curInsp(state.lastInsp); if (last && last.deletedAt) last = null;
   return ["home"].concat(last ? ["i-" + last.id] : [], ["agents", "settings"]);
 }
 function stepPage(dir) {
@@ -1212,7 +1326,7 @@ let sw = null;
 document.addEventListener("touchstart", e => {
   if (e.touches.length !== 1 || state.modal || ED) { sw = null; return; }
   const t0 = e.touches[0], tg = e.target;
-  if (t0.clientX < 22 || tg.closest("input, textarea, select, .secbar, .sheet, .photos, .numu, [data-hold]")) { sw = null; return; }
+  if (t0.clientX < 22 || tg.closest("input, textarea, select, .secbar, .sheet, .photos, .numu, [data-hold], .swrow")) { sw = null; return; }
   sw = { x: t0.clientX, y: t0.clientY, t: Date.now(), dx: 0, horiz: null };
 }, { passive: true });
 document.addEventListener("touchmove", e => {
@@ -1235,34 +1349,99 @@ const ED_COLORS = [["#e03131", "Red"], ["#f76707", "Orange"], ["#fcc419", "Yello
 const ED_TOOLS = [["arrow", "Arrow"], ["line", "Line"], ["box", "Box"], ["circle", "Circle"], ["pen", "Draw"], ["text", "Text"]];
 const ED_W = [["Thin", 0.004], ["Medium", 0.007], ["Thick", 0.012]];
 const ED_PLACES = ["Kitchen", "Living room", "Dining room", "Primary bedroom", "Bedroom 2", "Bedroom 3", "Main bathroom", "Ensuite", "Basement", "Basement bedroom", "Laundry room", "Utility room", "Furnace room", "Garage", "Attic", "Crawlspace", "Front of house", "Rear of house", "Left side", "Right side", "North wall", "South wall", "East wall", "West wall", "Roof", "Deck", "Front entry", "Back entry", "Hallway", "Stairs"];
+const FULL = [0, 0, 1, 1];
 let ED = null;
-async function openEditor(i, where) {
-  const ph = where.cover ? i.cover : i.sections[where.s].items[where.k].comments[where.c].photos[where.p]; if (!ph) return;
+// photo lists for batch editing: every photo in a section, or in the whole inspection
+function photoWheres(i, onlySec) {
+  const out = [];
+  i.sections.forEach((sec, s) => { if (onlySec != null && s !== onlySec) return; sec.items.forEach((it, k) => it.comments.forEach((cm, c) => cm.photos.forEach((ph, p) => out.push({ s, k, c, p })))); });
+  return out;
+}
+const phAt = (i, w) => w.cover ? i.cover : (((i.sections[w.s] || {}).items || [])[w.k] || { comments: [] }).comments[w.c] && i.sections[w.s].items[w.k].comments[w.c].photos[w.p];
+const itemAt = (i, w) => w.cover ? "Cover photo" : i.sections[w.s].items[w.k].name;
+function openEditor(i, where, list) {
+  list = list && list.length ? list : [where];
+  let n = list.findIndex(w => !w.cover && !where.cover && w.s === where.s && w.k === where.k && w.c === where.c && w.p === where.p); if (where.cover) n = 0; if (n < 0) { list = [where]; n = 0; }
+  ED = { i, list, n, entries: {}, tool: "arrow", color: "#e03131", w: 0.007, drawing: null, textAt: null, crop: null, ptrs: new Map(), swipe: null, sure: 0 };
+  const el = $("#ed"); el.hidden = false; document.body.classList.add("noscroll");
+  edShell(); edGo(n);
+}
+function edShell() {
+  const L = ED.list.length;
+  $("#ed").innerHTML = `<div class="edtop"><button class="btn sm ghost edlight" data-ed="cancel">Cancel</button>
+      <div class="ednav">${L > 1 ? `<button class="edtool" data-ed="prev" aria-label="Previous photo">‹</button>` : ""}<div class="edttl"><b id="edcount">Mark up photo</b><span id="editem"></span></div>${L > 1 ? `<button class="edtool" data-ed="next" aria-label="Next photo">›</button>` : ""}</div>
+      <button class="btn sm primary" data-ed="save" id="edsave">Save</button></div>
+    <div class="edstage" id="edstage"><canvas id="edc"></canvas><span class="spin" id="edspin" hidden></span></div>
+    ${L > 1 ? `<div class="edfilm" id="edfilm">${ED.list.map((w, n) => { const ph = phAt(ED.i, w), src = ph && phSrc(ph); return `<button class="edth" data-ed="jump" data-n="${n}" aria-label="Photo ${n + 1}">${src ? `<img src="${esc(src)}" alt="">` : ""}<i></i></button>`; }).join("")}</div>` : ""}
+    <div class="edtext" id="edtext" hidden><input id="edtxt" placeholder="Label text" autocomplete="off"><button class="btn sm primary" data-ed="addtext">Add</button><button class="btn sm ghost edlight" data-ed="canceltext">Cancel</button></div>
+    <div class="edbar" id="edbar"></div>`;
+}
+function edBar() {
+  const e = ED.cur, bar = $("#edbar"); if (!bar) return;
+  if (ED.crop) { bar.innerHTML = `<div class="edhint">Drag across the photo to choose what to keep.</div><div class="edrow"><button class="edtool" data-ed="cropreset">Full photo</button><span class="sp"></span><button class="edtool" data-ed="cropcancel">Cancel</button><button class="edtool on" data-ed="cropapply">Apply crop</button></div>`; return; }
+  bar.innerHTML = `<div class="edrow">${ED_TOOLS.map(([k, l]) => `<button class="edtool" data-ed="tool" data-v="${k}">${l}</button>`).join("")}</div>
+    <div class="edrow">${ED_COLORS.map(([c, l]) => `<button class="edsw" data-ed="color" data-v="${c}" aria-label="${l}" style="background:${c}"></button>`).join("")}<span class="edsep"></span>${ED_W.map(([l, v]) => `<button class="edw" data-ed="w" data-v="${v}" aria-label="${l} line"><i style="height:${Math.round(v * 500)}px"></i></button>`).join("")}</div>
+    <div class="edrow"><button class="edtool" data-ed="undo" ${e && e.hist.length ? "" : "disabled"}>↶ Undo</button><button class="edtool" data-ed="redo" ${e && e.redo.length ? "" : "disabled"}>↷ Redo</button><span class="edsep"></span><button class="edtool" data-ed="rotate">⟳ Rotate</button><button class="edtool" data-ed="crop">Crop</button><span class="edsep"></span><button class="edtool" data-ed="clear" ${e && e.marks.length ? "" : "disabled"}>Clear marks</button></div>
+    <label class="edrow ednote"><span>Where was this taken?</span><input id="ednote" list="edplaces" value="${esc(e ? e.note : "")}" placeholder="e.g. Basement, north wall" autocomplete="off"></label>
+    <datalist id="edplaces">${[e && e.item].concat(ED_PLACES).filter(Boolean).map(x => `<option value="${esc(x)}">`).join("")}</datalist>`;
+  edSync();
+}
+const edGeo = e => JSON.stringify({ m: e.marks, r: e.rot, c: e.crop });
+const edChanged = e => edGeo(e) !== e.orig || e.note !== e.origNote;
+const edCount = () => Object.values(ED.entries).filter(edChanged).length;
+function edHead() {
+  const L = ED.list.length, e = ED.cur, ch = edCount();
+  $("#edcount").textContent = L > 1 ? `Photo ${ED.n + 1} of ${L}` : "Mark up photo";
+  $("#editem").textContent = e ? e.item : "";
+  $("#edsave").textContent = ch > 1 ? `Save all (${ch})` : "Save";
+  document.querySelectorAll("#edfilm .edth").forEach((b, n) => { b.classList.toggle("on", n === ED.n); const x = ED.entries[n]; b.classList.toggle("dirty", !!(x && edChanged(x))); if (x && x.thumb) { const im = b.querySelector("img"); if (im) im.src = x.thumb; } });
+  const on = document.querySelector("#edfilm .edth.on"); on && on.scrollIntoView({ block: "nearest", inline: "center" });
+}
+async function edLoad(n) {
+  if (ED.entries[n]) return ED.entries[n];
+  const w = ED.list[n], ph = phAt(ED.i, w); if (!ph) return null;
   let blob = ph.base ? await photoBlob(ph.base) : null, noBase = false;
   if (!blob) { blob = await photoBlob(ph); noBase = !!ph.base; }
-  if (!blob) { toast("This photo isn't available right now. Try again with a connection.", "err"); return; }
+  if (!blob) return null;
   const url = URL.createObjectURL(blob);
   const img = await new Promise((res, rej) => { const im = new Image(); im.onload = () => res(im); im.onerror = rej; im.src = url; }).catch(() => null);
-  if (!img) { toast("Couldn't open that photo.", "err"); return; }
-  ED = { i, where, ph, img, url, marks: noBase ? [] : JSON.parse(JSON.stringify(ph.marks || [])), noBase, tool: "arrow", color: "#e03131", w: 0.007, drawing: null, textAt: null, item: where.cover ? "" : i.sections[where.s].items[where.k].name };
-  const el = $("#ed"); el.hidden = false; document.body.classList.add("noscroll");
-  el.innerHTML = `<div class="edtop"><button class="btn sm ghost edlight" data-ed="cancel">Cancel</button><b>Mark up photo</b><button class="btn sm primary" data-ed="save">Save</button></div>
-    <div class="edstage" id="edstage"><canvas id="edc"></canvas></div>
-    <div class="edtext" id="edtext" hidden><input id="edtxt" placeholder="Label text" autocomplete="off"><button class="btn sm primary" data-ed="addtext">Add</button><button class="btn sm ghost edlight" data-ed="canceltext">Cancel</button></div>
-    <div class="edbar">
-      <div class="edrow">${ED_TOOLS.map(([k, l]) => `<button class="edtool" data-ed="tool" data-v="${k}">${l}</button>`).join("")}</div>
-      <div class="edrow">${ED_COLORS.map(([c, l]) => `<button class="edsw" data-ed="color" data-v="${c}" aria-label="${l}" style="background:${c}"></button>`).join("")}<span class="edsep"></span>${ED_W.map(([l, v]) => `<button class="edw" data-ed="w" data-v="${v}" aria-label="${l} line"><i style="height:${Math.round(v * 500)}px"></i></button>`).join("")}<span class="edsep"></span><button class="edtool" data-ed="undo">Undo</button><button class="edtool" data-ed="clear">Clear</button></div>
-      <label class="edrow ednote"><span>Where was this taken?</span><input id="ednote" list="edplaces" value="${esc(ph.note || "")}" placeholder="e.g. Basement, north wall" autocomplete="off"></label>
-      <datalist id="edplaces">${[ED.item].concat(ED_PLACES).filter(Boolean).map(x => `<option value="${esc(x)}">`).join("")}</datalist>
-    </div>`;
-  edSync(); edFit();
-  if (noBase) toast("The original isn't available offline, so new marks go on top of the old ones.");
+  if (!img) { URL.revokeObjectURL(url); return null; }
+  const e = { w, ph, img, url, noBase, item: itemAt(ED.i, w), marks: noBase ? [] : JSON.parse(JSON.stringify(ph.marks || [])), rot: noBase ? 0 : (ph.rot || 0), crop: noBase ? FULL.slice() : (ph.crop || FULL).slice(), note: ph.note || "", hist: [], redo: [] };
+  e.orig = edGeo(e); e.origNote = e.note;
+  return (ED.entries[n] = e);
+}
+async function edGo(n) {
+  if (!ED) return; n = Math.max(0, Math.min(ED.list.length - 1, n));
+  if (ED.cur) { const ni = $("#ednote"); if (ni) ED.cur.note = (ni.value || "").trim(); edThumb(ED.cur); }
+  ED.crop = null; ED.drawing = null; ED.textAt = null; const t = $("#edtext"); if (t) t.hidden = true;
+  ED.n = n; const sp = $("#edspin"); if (sp) sp.hidden = false;
+  const e = await edLoad(n); if (!ED || ED.n !== n) return;
+  if (sp) sp.hidden = true;
+  if (!e) { ED.cur = null; toast("This photo isn't available right now. Try again with a connection.", "err"); edBar(); edHead(); const c = $("#edc"); c.width = c.height = 0; return; }
+  ED.cur = e; edBar(); edHead(); edFit();
+  if (e.noBase && !e.warned) { e.warned = 1; toast("The original isn't on this phone, so new marks go on top of the old ones."); }
 }
 function edSync() { if (!ED) return; document.querySelectorAll("#ed [data-ed=tool]").forEach(b => b.classList.toggle("on", b.dataset.v === ED.tool)); document.querySelectorAll("#ed [data-ed=color]").forEach(b => b.classList.toggle("on", b.dataset.v === ED.color)); document.querySelectorAll("#ed [data-ed=w]").forEach(b => b.classList.toggle("on", +b.dataset.v === ED.w)); }
+// geometry: rot = quarter turns clockwise; crop = [x, y, w, h] of the rotated photo (0-1); marks are in the cropped frame (0-1)
+const rotDims = e => e.rot % 2 ? [e.img.naturalHeight, e.img.naturalWidth] : [e.img.naturalWidth, e.img.naturalHeight];
+const rotPt = ([x, y], r) => r === 1 ? [1 - y, x] : r === 2 ? [1 - x, 1 - y] : r === 3 ? [y, 1 - x] : [x, y];
+const unrotPt = ([u, v], r) => r === 1 ? [v, 1 - u] : r === 2 ? [1 - u, 1 - v] : r === 3 ? [1 - v, u] : [u, v];
+const fromCrop = ([x, y], c) => [c[0] + x * c[2], c[1] + y * c[3]];
+const toCrop = ([u, v], c) => [(u - c[0]) / c[2], (v - c[1]) / c[3]];
+function remap(marks, r0, c0, r1, c1) { return marks.map(m => Object.assign({}, m, { pts: m.pts.map(p => toCrop(rotPt(unrotPt(fromCrop(p, c0), r0), r1), c1)) })); }
+function rotRect(c, r0, r1) { const a = rotPt(unrotPt([c[0], c[1]], r0), r1), b = rotPt(unrotPt([c[0] + c[2], c[1] + c[3]], r0), r1); return [Math.min(a[0], b[0]), Math.min(a[1], b[1]), Math.abs(b[0] - a[0]), Math.abs(b[1] - a[1])]; }
+function geoDraw(g, e, crop, W, H) {
+  const iw = e.img.naturalWidth, ih = e.img.naturalHeight, [RW, RH] = rotDims(e);
+  g.save(); g.scale(W / (crop[2] * RW), H / (crop[3] * RH)); g.translate(-crop[0] * RW, -crop[1] * RH);
+  if (e.rot === 1) { g.translate(ih, 0); g.rotate(Math.PI / 2); } else if (e.rot === 2) { g.translate(iw, ih); g.rotate(Math.PI); } else if (e.rot === 3) { g.translate(0, iw); g.rotate(-Math.PI / 2); }
+  g.drawImage(e.img, 0, 0, iw, ih); g.restore();
+}
+const viewCrop = () => ED.crop ? FULL : ED.cur.crop;
 function edFit() {
-  if (!ED) return; const st = $("#edstage"), c = $("#edc"), W = st.clientWidth, H = st.clientHeight, r = Math.min(W / ED.img.naturalWidth, H / ED.img.naturalHeight), dpr = window.devicePixelRatio || 1;
-  ED.cw = Math.floor(ED.img.naturalWidth * r); ED.ch = Math.floor(ED.img.naturalHeight * r);
-  c.style.width = ED.cw + "px"; c.style.height = ED.ch + "px"; c.width = Math.round(ED.cw * dpr); c.height = Math.round(ED.ch * dpr); edDraw();
+  if (!ED || !ED.cur) return; const e = ED.cur, st = $("#edstage"), c = $("#edc"), vc = viewCrop(), [RW, RH] = rotDims(e), fw = RW * vc[2], fh = RH * vc[3];
+  const W = st.clientWidth - 8, H = st.clientHeight - 8, r = Math.min(W / fw, H / fh), dpr = window.devicePixelRatio || 1;
+  e.cw = Math.max(1, Math.floor(fw * r)); e.ch = Math.max(1, Math.floor(fh * r));
+  c.style.width = e.cw + "px"; c.style.height = e.ch + "px"; c.width = Math.round(e.cw * dpr); c.height = Math.round(e.ch * dpr); edDraw();
 }
 window.addEventListener("resize", () => { if (ED) edFit(); });
 function drawMark(g, m, W, H) {
@@ -1277,47 +1456,102 @@ function drawMark(g, m, W, H) {
   else if (m.t === "circle") { g.ellipse((x1 + x2) / 2, (y1 + y2) / 2, Math.abs(x2 - x1) / 2 || 1, Math.abs(y2 - y1) / 2 || 1, 0, 0, Math.PI * 2); g.stroke(); }
 }
 function edDraw() {
-  if (!ED) return; const c = $("#edc"), g = c.getContext("2d"), W = c.width, H = c.height;
-  g.clearRect(0, 0, W, H); g.drawImage(ED.img, 0, 0, W, H);
-  ED.marks.concat(ED.drawing ? [ED.drawing] : []).forEach(m => drawMark(g, m, W, H));
+  if (!ED || !ED.cur) return; const e = ED.cur, c = $("#edc"), g = c.getContext("2d"), W = c.width, H = c.height;
+  g.clearRect(0, 0, W, H); geoDraw(g, e, viewCrop(), W, H);
+  if (ED.crop) {
+    remap(e.marks, e.rot, e.crop, e.rot, FULL).forEach(m => drawMark(g, m, W, H));
+    const r = ED.crop.rect; g.save(); g.fillStyle = "rgba(0,0,0,.55)"; g.beginPath(); g.rect(0, 0, W, H); g.rect(r[0] * W, r[1] * H, r[2] * W, r[3] * H); g.fill("evenodd");
+    g.strokeStyle = "#fff"; g.lineWidth = 2 * (window.devicePixelRatio || 1); g.setLineDash([8, 6]); g.strokeRect(r[0] * W, r[1] * H, r[2] * W, r[3] * H); g.restore(); return;
+  }
+  e.marks.concat(ED.drawing ? [ED.drawing] : []).forEach(m => drawMark(g, m, W, H));
 }
+// undo / redo: snapshot the photo's marks, rotation and crop before each change
+function edPush(e) { e.hist.push({ m: JSON.parse(JSON.stringify(e.marks)), r: e.rot, c: e.crop.slice() }); if (e.hist.length > 60) e.hist.shift(); e.redo = []; }
+function edRestore(e, s) { e.marks = s.m; e.rot = s.r; e.crop = s.c; }
+function edThumb(e) { try { const c = document.createElement("canvas"), [RW, RH] = rotDims(e), k = 120 / Math.max(RW * e.crop[2], RH * e.crop[3]); c.width = Math.max(1, Math.round(RW * e.crop[2] * k)); c.height = Math.max(1, Math.round(RH * e.crop[3] * k)); const g = c.getContext("2d"); geoDraw(g, e, e.crop, c.width, c.height); e.marks.forEach(m => drawMark(g, m, c.width, c.height)); e.thumb = c.toDataURL("image/jpeg", .7); } catch (x) {} }
+function edChange() { edBar(); edHead(); edFit(); }
 const edPt = e => { const r = $("#edc").getBoundingClientRect(); return [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))]; };
+// drawing, cropping, and two-finger (or off-photo) swipe between photos
 document.addEventListener("pointerdown", e => {
-  if (!ED || e.target.id !== "edc") return; e.preventDefault(); const pt = edPt(e);
+  if (!ED || !e.target.closest || !e.target.closest("#edstage, #edfilm")) return;
+  ED.ptrs.set(e.pointerId, [e.clientX, e.clientY]);
+  if (ED.ptrs.size === 2 && ED.list.length > 1) { ED.drawing = null; if (ED.crop) ED.crop.drag = null; const xs = [...ED.ptrs.values()]; ED.swipe = { x: (xs[0][0] + xs[1][0]) / 2, dx: 0, two: true }; edDraw(); return; }
+  if (e.target.id !== "edc" || !ED.cur) { if (ED.list.length > 1 && !e.target.closest("[data-ed]")) ED.swipe = { x: e.clientX, y: e.clientY, dx: 0 }; return; }
+  e.preventDefault(); const pt = edPt(e);
+  if (ED.crop) { ED.crop.drag = pt; ED.crop.prev = ED.crop.rect; e.target.setPointerCapture && e.target.setPointerCapture(e.pointerId); return; }
   if (ED.tool === "text") { ED.textAt = pt; $("#edtext").hidden = false; const ti = $("#edtxt"); ti.value = ""; ti.focus(); return; }
   ED.drawing = { t: ED.tool, c: ED.color, w: ED.w, pts: [pt, pt] }; e.target.setPointerCapture && e.target.setPointerCapture(e.pointerId);
 });
-document.addEventListener("pointermove", e => { if (!ED || !ED.drawing) return; const pt = edPt(e); if (ED.drawing.t === "pen") ED.drawing.pts.push(pt); else ED.drawing.pts[1] = pt; requestAnimationFrame(edDraw); });
-document.addEventListener("pointerup", () => { if (!ED || !ED.drawing) return; const d = ED.drawing, [a, b] = [d.pts[0], d.pts[d.pts.length - 1]]; ED.drawing = null; if (d.t === "pen" ? d.pts.length > 2 : Math.hypot(a[0] - b[0], a[1] - b[1]) > 0.01) ED.marks.push(d); edDraw(); });
-function edClose() { if (!ED) return; URL.revokeObjectURL(ED.url); ED = null; const el = $("#ed"); el.hidden = true; el.innerHTML = ""; document.body.classList.remove("noscroll"); }
+document.addEventListener("pointermove", e => {
+  if (!ED) return; if (ED.ptrs.has(e.pointerId)) ED.ptrs.set(e.pointerId, [e.clientX, e.clientY]);
+  if (ED.swipe) { const xs = [...ED.ptrs.values()]; if (xs.length) ED.swipe.dx = (ED.swipe.two && xs.length > 1 ? (xs[0][0] + xs[1][0]) / 2 : xs[0][0]) - ED.swipe.x; return; }
+  if (ED.crop && ED.crop.drag) { const p = edPt(e), a = ED.crop.drag; ED.crop.rect = [Math.min(a[0], p[0]), Math.min(a[1], p[1]), Math.abs(p[0] - a[0]), Math.abs(p[1] - a[1])]; requestAnimationFrame(edDraw); return; }
+  if (!ED.drawing) return; const pt = edPt(e); if (ED.drawing.t === "pen") ED.drawing.pts.push(pt); else ED.drawing.pts[1] = pt; requestAnimationFrame(edDraw);
+});
+function edPtrEnd(e) {
+  if (!ED) return; ED.ptrs.delete(e.pointerId);
+  if (ED.swipe) { if (ED.ptrs.size) return; const s = ED.swipe; ED.swipe = null; if (Math.abs(s.dx) > 60) edGo(ED.n + (s.dx < 0 ? 1 : -1)); return; }
+  if (ED.crop && ED.crop.drag) { ED.crop.drag = null; const r = ED.crop.rect; if (r[2] < 0.04 || r[3] < 0.04) ED.crop.rect = ED.crop.prev; edDraw(); return; }
+  if (!ED.drawing) return; const d = ED.drawing, [a, b] = [d.pts[0], d.pts[d.pts.length - 1]]; ED.drawing = null;
+  if (d.t === "pen" ? d.pts.length > 2 : Math.hypot(a[0] - b[0], a[1] - b[1]) > 0.01) { edPush(ED.cur); ED.cur.marks.push(d); edChange(); } else edDraw();
+}
+document.addEventListener("pointerup", edPtrEnd); document.addEventListener("pointercancel", edPtrEnd);
+function edClose() { if (!ED) return; Object.values(ED.entries).forEach(x => URL.revokeObjectURL(x.url)); ED = null; const el = $("#ed"); el.hidden = true; el.innerHTML = ""; document.body.classList.remove("noscroll"); }
+async function edRender(e) {
+  const [RW, RH] = rotDims(e), c = document.createElement("canvas"); c.width = Math.max(1, Math.round(RW * e.crop[2])); c.height = Math.max(1, Math.round(RH * e.crop[3]));
+  const g = c.getContext("2d"); geoDraw(g, e, e.crop, c.width, c.height); e.marks.forEach(m => drawMark(g, m, c.width, c.height));
+  return { blob: await new Promise(r => c.toBlob(r, "image/jpeg", .85)), w: c.width, h: c.height };
+}
 async function edSave() {
-  const { i, ph, img, marks } = ED, note = ($("#ednote").value || "").trim(), changed = JSON.stringify(marks) !== JSON.stringify(ph.marks || []);
-  ph.note = note;
-  if (changed) {
-    const btn = document.querySelector("[data-ed=save]"); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
-    const c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight; const g = c.getContext("2d");
-    g.drawImage(img, 0, 0); marks.forEach(m => drawMark(g, m, c.width, c.height));
-    const blob = await new Promise(r => c.toBlob(r, "image/jpeg", .85));
-    if (!ph.base || ED.noBase) ph.base = { id: ph.id, asset: ph.asset, url: ph.url, w: ph.w, h: ph.h };
-    if (!marks.length) { Object.assign(ph, { id: ph.base.id, asset: ph.base.asset, url: ph.base.url, drive: null, marks: [] }); delete ph.base; }
-    else { const nph = await storeBlob(blob, c.width, c.height, ph.item || ED.item); Object.assign(ph, { id: nph.id, asset: nph.asset, url: nph.url, drive: null, marks, _obj: undefined }); }
-    if (mcp && ph.asset) queueDrive(i, ph, ph.item || ED.item || "Photo");
+  if (ED.cur) { const ni = $("#ednote"); if (ni) ED.cur.note = (ni.value || "").trim(); }
+  const i = ED.i, list = Object.values(ED.entries).filter(edChanged);
+  if (!list.length) { edClose(); return; }
+  const btn = $("#edsave"); btn.disabled = true; btn.innerHTML = '<span class="spin"></span>';
+  let n = 0;
+  for (const e of list) {
+    const ph = e.ph; ph.note = e.note;
+    if (edGeo(e) !== e.orig) {
+      const plain = !e.marks.length && !e.rot && e.crop.join() === FULL.join();
+      if (!ph.base || e.noBase) ph.base = { id: ph.id, asset: ph.asset, url: ph.url, w: ph.w, h: ph.h };
+      if (plain) { Object.assign(ph, { id: ph.base.id, asset: ph.base.asset, url: ph.base.url, w: ph.base.w, h: ph.base.h, drive: null, marks: [], rot: 0, crop: null, _obj: undefined }); delete ph.base; }
+      else { const out = await edRender(e), nph = await storeBlob(out.blob, out.w, out.h, ph.item || e.item); Object.assign(ph, { id: nph.id, asset: nph.asset, url: nph.url, w: out.w, h: out.h, drive: null, marks: e.marks, rot: e.rot, crop: e.crop.join() === FULL.join() ? null : e.crop, _obj: undefined }); }
+      if (mcp) queueDrive(i, ph, ph.item || e.item || "Photo");
+    }
+    n++;
   }
-  saveInsp(i); edClose(); render(); toast(changed ? "Photo marked up." : "Photo note saved.");
+  saveInsp(i); edClose(); render(); toast(n > 1 ? n + " photos saved." : "Photo saved.");
 }
 document.addEventListener("click", e => {
-  const b = e.target.closest("[data-ed]"); if (!b || !ED) return; const a = b.dataset.ed;
-  if (a === "cancel") edClose();
+  const b = e.target.closest("[data-ed]"); if (!b || !ED || b.disabled) return; const a = b.dataset.ed, cur = ED.cur;
+  if (a !== "cancel") ED.sure = 0;
+  if (a === "cancel") { const ch = edCount() || (cur && $("#ednote") && ($("#ednote").value || "").trim() !== cur.origNote ? 1 : 0); if (ch && !ED.sure) { ED.sure = 1; toast(`Tap Cancel again to throw away ${ch > 1 ? "changes to " + ch + " photos" : "your changes"}.`); return; } edClose(); }
   else if (a === "save") edSave();
+  else if (a === "prev") edGo(ED.n - 1);
+  else if (a === "next") edGo(ED.n + 1);
+  else if (a === "jump") edGo(+b.dataset.n);
+  else if (!cur) return;
   else if (a === "tool") { ED.tool = b.dataset.v; edSync(); }
   else if (a === "color") { ED.color = b.dataset.v; edSync(); }
   else if (a === "w") { ED.w = +b.dataset.v; edSync(); }
-  else if (a === "undo") { ED.marks.pop(); edDraw(); }
-  else if (a === "clear") { ED.marks = []; edDraw(); }
-  else if (a === "addtext") { const s = ($("#edtxt").value || "").trim(); if (s && ED.textAt) ED.marks.push({ t: "text", c: ED.color, w: ED.w, pts: [ED.textAt], s }); ED.textAt = null; $("#edtext").hidden = true; edDraw(); }
+  else if (a === "undo") { if (!cur.hist.length) return; cur.redo.push({ m: cur.marks, r: cur.rot, c: cur.crop }); edRestore(cur, cur.hist.pop()); edChange(); }
+  else if (a === "redo") { if (!cur.redo.length) return; cur.hist.push({ m: cur.marks, r: cur.rot, c: cur.crop }); edRestore(cur, cur.redo.pop()); edChange(); }
+  else if (a === "clear") { if (!cur.marks.length) return; edPush(cur); cur.marks = []; edChange(); }
+  else if (a === "rotate") { edPush(cur); const r1 = (cur.rot + 1) % 4; cur.marks = remap(cur.marks, cur.rot, cur.crop, r1, rotRect(cur.crop, cur.rot, r1)); cur.crop = rotRect(cur.crop, cur.rot, r1); cur.rot = r1; edChange(); }
+  else if (a === "crop") { const ni = $("#ednote"); if (ni) cur.note = (ni.value || "").trim(); ED.crop = { rect: cur.crop.slice(), drag: null }; edBar(); edFit(); }
+  else if (a === "cropreset") { ED.crop.rect = FULL.slice(); edDraw(); }
+  else if (a === "cropcancel") { ED.crop = null; edBar(); edFit(); }
+  else if (a === "cropapply") { const r = ED.crop.rect.map(v => Math.round(v * 1e4) / 1e4); ED.crop = null; if (r.join() !== cur.crop.join()) { edPush(cur); cur.marks = remap(cur.marks, cur.rot, cur.crop, cur.rot, r); cur.crop = r; } edChange(); }
+  else if (a === "addtext") { const s = ($("#edtxt").value || "").trim(); if (s && ED.textAt) { edPush(cur); cur.marks.push({ t: "text", c: ED.color, w: ED.w, pts: [ED.textAt], s }); } ED.textAt = null; $("#edtext").hidden = true; edChange(); }
   else if (a === "canceltext") { ED.textAt = null; $("#edtext").hidden = true; }
 });
-document.addEventListener("keydown", e => { if (!ED) return; if (e.key === "Enter" && e.target.id === "edtxt") { e.preventDefault(); document.querySelector("[data-ed=addtext]").click(); } if (e.key === "Escape") edClose(); });
+document.addEventListener("input", e => { if (ED && ED.cur && e.target.id === "ednote") { ED.cur.note = (e.target.value || "").trim(); edHead(); } });
+document.addEventListener("keydown", e => {
+  if (!ED) return; const typing = /INPUT|TEXTAREA/.test((document.activeElement || {}).tagName || "");
+  if (e.key === "Enter" && e.target.id === "edtxt") { e.preventDefault(); document.querySelector("[data-ed=addtext]").click(); }
+  else if (e.key === "Escape") { if (ED.crop) { ED.crop = null; edBar(); edFit(); } else document.querySelector("[data-ed=cancel]").click(); }
+  else if (!typing && (e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "z") { e.preventDefault(); document.querySelector(e.shiftKey ? "[data-ed=redo]" : "[data-ed=undo]")?.click(); }
+  else if (!typing && e.key === "ArrowRight") edGo(ED.n + 1); else if (!typing && e.key === "ArrowLeft") edGo(ED.n - 1);
+});
 
 // ---------- PDF ----------
 async function scaleBlob(blob, max, q) { const d = await scaleData(blob, max, q), bin = atob(d.split(",")[1]), u = new Uint8Array(bin.length); for (let n = 0; n < bin.length; n++) u[n] = bin.charCodeAt(n); return new Blob([u], { type: "image/jpeg" }); }
@@ -1354,11 +1588,23 @@ async function buildPdf(i) {
   const imgData = {};
   for (const x of F) for (const ph of x.cm.photos) { const b = await photoBlob(ph); if (b) { try { imgData[ph.id] = await scaleData(b, 1100, .72); } catch (e2) { imgData[ph.id] = await blobToDataURL(b); } } }
   // cover
-  doc.setFillColor(29, 32, 36); doc.rect(0, 0, W, 118, "F");
-  doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(255); doc.text(s.bizName || "Home Inspection", M, 54);
-  doc.setFontSize(12); doc.setTextColor(232, 89, 12); doc.text("HOME INSPECTION REPORT", M, 76);
-  doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(220); doc.text([s.phone, s.email, s.address].filter(Boolean).join("   ·   "), M, 98);
-  y = 136;
+  const logoB = s.logo && await photoBlob(s.logo), meB = s.mePhoto && await photoBlob(s.mePhoto);
+  let logoD = null; if (logoB) { try { logoD = await blobToDataURL(logoB); } catch (x) {} }
+  const meX = W - M - 66, txtW = meB ? meX - M - 12 : CW;
+  if (logoD) {
+    const lw0 = s.logo.w || 300, lh0 = s.logo.h || 100, k = Math.min(230 / lw0, 66 / lh0), lw = lw0 * k, lh = lh0 * k;
+    try { doc.addImage(logoD, logoD.startsWith("data:image/png") ? "PNG" : "JPEG", M, 26 + (66 - lh) / 2, lw, lh); } catch (x) {}
+    doc.setFont("helvetica", "bold"); doc.setFontSize(12); doc.setTextColor(232, 89, 12); doc.text("HOME INSPECTION REPORT", M, 112);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9); doc.setTextColor(90); doc.text(doc.splitTextToSize([s.phone, s.email, s.address].filter(Boolean).join("   ·   "), txtW)[0] || "", M, 127);
+    doc.setDrawColor(29, 32, 36); doc.setLineWidth(2); doc.line(M, 138, W - M, 138);
+  } else {
+    doc.setFillColor(29, 32, 36); doc.rect(0, 0, W, 138, "F");
+    doc.setFont("helvetica", "bold"); doc.setFontSize(26); doc.setTextColor(255); doc.text(doc.splitTextToSize(s.bizName || "Home Inspection", txtW)[0], M, 58);
+    doc.setFontSize(12); doc.setTextColor(232, 89, 12); doc.text("HOME INSPECTION REPORT", M, 82);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(9.5); doc.setTextColor(220); doc.text(doc.splitTextToSize([s.phone, s.email, s.address].filter(Boolean).join("   ·   "), txtW)[0] || "", M, 106);
+  }
+  if (meB) { try { doc.addImage(await cropData(meB, 66, 66), "JPEG", meX, 26, 66, 66); doc.setDrawColor(logoD ? 221 : 80); doc.setLineWidth(1); doc.rect(meX, 26, 66, 66, "S"); doc.setFont("helvetica", "bold"); doc.setFontSize(8.5); doc.setTextColor(logoD ? 34 : 255); doc.text(doc.splitTextToSize(s.inspector || "", 120)[0] || "", meX + 66, 106, { align: "right" }); if (s.cert) { doc.setFont("helvetica", "normal"); doc.setFontSize(7.5); doc.setTextColor(logoD ? 104 : 200); doc.text(doc.splitTextToSize(s.cert, 120)[0], meX + 66, 117, { align: "right" }); } } catch (x) {} }
+  y = 156;
   const coverBlob = i.cover && await photoBlob(i.cover);
   if (coverBlob) { const ch = 268; try { doc.addImage(await cropData(coverBlob, CW, ch), "JPEG", M, y, CW, ch); y += ch + 14; } catch (x) {} }
   para(i.address + (i.town ? ", " + i.town : ""), 20, "bold", [20, 22, 26]); y += 2;
